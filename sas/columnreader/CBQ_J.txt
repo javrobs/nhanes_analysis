@@ -1,0 +1,6 @@
+SEQN - Respondent sequence number
+CBD071 - Money spent at supermarket/grocery store
+CBD091 - Money spent on nonfood items
+CBD111 - Money spent on food at other stores
+CBD121 - Money spent on eating out
+CBD131 - Money spent on carryout/delivered foods

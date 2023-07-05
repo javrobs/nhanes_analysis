@@ -1,0 +1,43 @@
+SEQN - Respondent sequence number
+SDDSRVYR - Data Release Number
+RIDSTATR - Interview/Examination Status
+RIDEXMON - Six month time period
+RIAGENDR - Gender
+RIDAGEYR - Age at Screening Adjudicated - Recode
+RIDAGEMN - Age in Months at Screening - Recode
+RIDAGEEX - Age in Months at Exam - Recode
+RIDRETH1 - Race/Ethnicity - Recode
+DMQMILIT - Served in the US Armed Forces
+DMDBORN2 - Country of Birth - Recode
+DMDCITZN - Citizenship Status
+DMDYRSUS - Length of time in US
+DMDEDUC3 - Education Level - Children/Youth 6-19
+DMDEDUC2 - Education Level - Adults 20+
+DMDSCHOL - Now attending school?
+DMDMARTL - Marital Status
+DMDHHSIZ - Total number of people in the Household
+DMDFMSIZ - Total number of people in the Family
+INDHHIN2 - Annual Household Income
+INDFMIN2 - Annual Family Income
+INDFMPIR - Ratio of family income to poverty
+RIDEXPRG - Pregnancy Status at Exam - Recode
+DMDHRGND - HH Ref Person Gender
+DMDHRAGE - HH Ref Person Age
+DMDHRBR2 - HH Ref Person Country of Birth
+DMDHREDU - HH Ref Person Education Level
+DMDHRMAR - HH Ref Person Marital Status
+DMDHSEDU - HH Ref Person's Spouse Education Level
+SIALANG - Language of SP Interview
+SIAPROXY - Proxy used in SP Interview?
+SIAINTRP - Interpreter used in SP Interview?
+FIALANG - Language of Family Interview
+FIAPROXY - Proxy used in Family Interview?
+FIAINTRP - Interpreter used in Family Interview?
+MIALANG - Language of MEC Interview
+MIAPROXY - Proxy used in MEC Interview?
+MIAINTRP - Interpreter used in MEC Interview?
+AIALANG - Language of ACASI Interview
+WTINT2YR - Full Sample 2 Year Interview Weight
+WTMEC2YR - Full Sample 2 Year MEC Exam Weight
+SDMVPSU - Masked Variance Pseudo-PSU
+SDMVSTRA - Masked Variance Pseudo-Stratum
