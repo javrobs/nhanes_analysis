@@ -1,0 +1,18 @@
+SEQN - Respondent sequence number
+CBD010 - Anyone in the family on a special diet
+CBQ020 - Fruits available at home
+CBQ030 - Dark green vegetables available at home
+CBQ040 - Salty snacks available at home
+CBQ050 - Fat-free/low fat milk available at home
+CBQ060 - Soft drinks available at home
+CBD070 - Money spent at supermarket/grocery store
+CBD090 - Money spent on nonfood items
+CBD110 - Money spent on food at other stores
+CBD120 - Money spent on eating out
+CBD130 - Money spent on carryout/delivered foods
+CBQ140 - How often do you do major food shopping
+CBD150 - Time to get to grocery store
+CBD160 - # of times someone cooked dinner at home
+CBD170 - Time spent cooking dinner/cleaning up
+CBD180 - # of meals family ate together in 7 days
+CBQ190 - # of meals ate together cooked at home
