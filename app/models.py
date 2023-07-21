@@ -36,52 +36,65 @@ class main_table(db.Model):
 class data_release_cycle_table(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     description=db.Column(db.String)
+    select = db.relationship("main_table", lazy="dynamic")
 
 class six_month_time_period_table(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     description=db.Column(db.String)
+    select = db.relationship("main_table", lazy="dynamic")
 
 class gender_table(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     description=db.Column(db.String)
+    select = db.relationship("main_table", lazy="dynamic")
 
 class age_groups_table(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     description=db.Column(db.String)
+    select = db.relationship("main_table", lazy="dynamic")
 
 class race_ethnic_origin_table(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     description=db.Column(db.String)
+    select = db.relationship("main_table", lazy="dynamic")
 
 class served_in_the_us_armed_forces_table(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     description=db.Column(db.String)
+    select = db.relationship("main_table", lazy="dynamic")
 
 class country_of_birth_table(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     description=db.Column(db.String)
+    select = db.relationship("main_table", lazy="dynamic")
 
 class citizenship_status_table(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     description=db.Column(db.String)
+    select = db.relationship("main_table", lazy="dynamic")
 
 class education_level_children_table(db.Model):
     id=db.Column(db.Integer,primary_key=True)
-    description=db.Column(db.String)    
+    description=db.Column(db.String) 
+    select = db.relationship("main_table", lazy="dynamic")   
 
 class education_level_adults_table(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     description=db.Column(db.String)
+    select = db.relationship("main_table", lazy="dynamic")
 
 class marital_status_table(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     description=db.Column(db.String)
+    select = db.relationship("main_table", lazy="dynamic")
 
 class total_number_of_people_table(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     description=db.Column(db.String)
+    select = db.relationship("main_table", lazy="dynamic")
 
 class annual_income_table(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     description=db.Column(db.String)
+    select = db.relationship("main_table", lazy="dynamic")
     
