@@ -1,5 +1,6 @@
 Table,Code or Value,Value Description
 Data_release_cycle,5,NHANES 2007-2008 Public Release
+Data_release_cycle,10,NHANES 2017-2018 public release
 Six_month_time_period,1,November 1 through April 30
 Six_month_time_period,2,May 1 through October 31
 Gender,1,Male
@@ -9,6 +10,8 @@ Race_Hispanic_origin_w__NH_Asian,2,Other Hispanic
 Race_Hispanic_origin_w__NH_Asian,3,Non-Hispanic White
 Race_Hispanic_origin_w__NH_Asian,4,Non-Hispanic Black
 Race_Hispanic_origin_w__NH_Asian,5,Other Race - Including Multi-Racial
+Race_Hispanic_origin_w__NH_Asian,6,Non-Hispanic Asian
+Race_Hispanic_origin_w__NH_Asian,7,Other Race - Including Multi-Racial
 Served_active_duty_in_US_Armed_Forces,1,Yes
 Served_active_duty_in_US_Armed_Forces,2,No
 Served_active_duty_in_US_Armed_Forces,7,Refused
@@ -19,6 +22,10 @@ Country_of_birth,4,Born in Other Spanish Speaking Country
 Country_of_birth,5,Born in Other Non-Spanish Speaking Country
 Country_of_birth,7,Refused
 Country_of_birth,9,Don't Know
+Country_of_birth,1,"Born in 50 US states or Washington, DC"
+Country_of_birth,2,Others
+Country_of_birth,77,Refused
+Country_of_birth,99,Don't Know
 Citizenship_status,1,Citizen by birth or naturalization
 Citizenship_status,2,Not a citizen of the US
 Citizenship_status,7,Refused
@@ -99,6 +106,11 @@ HH_ref_person_education_level,4,Some College or AA degree
 HH_ref_person_education_level,5,College Graduate or above
 HH_ref_person_education_level,7,Refused
 HH_ref_person_education_level,9,Don't know
+HH_ref_person_education_level,1,Less than high school degree
+HH_ref_person_education_level,2,High school grad/GED or some college/AA degree
+HH_ref_person_education_level,3,College graduate or above
+HH_ref_person_education_level,7,Refused
+HH_ref_person_education_level,9,Don't Know
 HH_ref_person_marital_status,1,Married
 HH_ref_person_marital_status,2,Widowed
 HH_ref_person_marital_status,3,Divorced
@@ -107,6 +119,11 @@ HH_ref_person_marital_status,5,Never married
 HH_ref_person_marital_status,6,Living with partner
 HH_ref_person_marital_status,77,Refused
 HH_ref_person_marital_status,99,Don't know
+HH_ref_person_marital_status,1,Married/Living with partner
+HH_ref_person_marital_status,2,Widowed/Divorced/Separated
+HH_ref_person_marital_status,3,Never Married
+HH_ref_person_marital_status,77,Refused
+HH_ref_person_marital_status,99,Don't Know
 HH_ref_person_spouse_education_level,1,Less Than 9th Grade
 HH_ref_person_spouse_education_level,2,9-11th Grade (Includes 12th grade with no diploma)
 HH_ref_person_spouse_education_level,3,High School Grad/GED or equivalent
@@ -114,6 +131,11 @@ HH_ref_person_spouse_education_level,4,Some College or AA degree
 HH_ref_person_spouse_education_level,5,College Graduate or above
 HH_ref_person_spouse_education_level,7,Refused
 HH_ref_person_spouse_education_level,9,Don't know
+HH_ref_person_spouse_education_level,1,Less than high school degree
+HH_ref_person_spouse_education_level,2,High school grad/GED or some college/AA degree
+HH_ref_person_spouse_education_level,3,College graduate or above
+HH_ref_person_spouse_education_level,7,Refused
+HH_ref_person_spouse_education_level,9,Don't Know
 Age_in_years_at_screening_bins,1,<5 years
 Age_in_years_at_screening_bins,2,5-10 years
 Age_in_years_at_screening_bins,3,10-15 years
