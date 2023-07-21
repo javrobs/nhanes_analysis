@@ -12,8 +12,7 @@
         <div>
             <h1>Title</h1>
             <p>The following paragraph is retrieved from an API:</p>
-            <p id="text"></p>
-            {{result.name}}
+            <p id="text">{{result.description}}</p>
             <table>
                 <tr>
                     <td>
@@ -22,8 +21,9 @@
                     <td>
                         <select id="year" onchange="populate(this)">
                             <option value="default">Select a year</option>
-                            <option value="07">2007-2008</option>
-                            <option value="17">2017-2018</option>
+                            {% for each in result %}
+                            <option value={{each.id}}>{{each.description}}</option>
+                            {% endfor %}
                         </select>
                     </td>
                 </tr>

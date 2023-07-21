@@ -3,21 +3,15 @@ import app.models as model
 from flask import render_template,jsonify
 
 
-@app.route("/")
-def home():
-    return "api-landsite"
 
-@app.route("/test")
-def test():
-    result=model.data_release_cycle_table.query.first()
+@app.route("/<input>")
+def test(input):
+    dict={"data_release_cycle_table":model.data_release_cycle_table,
+          "gender_table":model.gender_table}
+    result=dict[input].query.all()
+    print(result)
     return render_template("index.html",result=result)
-@app.route("/endpoint")
-def endpoint():
-    return render_template("index.html")
 
-@app.route("/columns/<year>")
-def columns(year): 
-    return list(df[year].columns) 
 
 
 

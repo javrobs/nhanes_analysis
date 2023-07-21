@@ -67,7 +67,7 @@ class citizenship_status_table(db.Model):
 
 class education_level_children_table(db.Model):
     id=db.Column(db.Integer,primary_key=True)
-    description=db.Column(db.String)
+    description=db.Column(db.String)    
 
 class education_level_adults_table(db.Model):
     id=db.Column(db.Integer,primary_key=True)
