@@ -39,6 +39,6 @@ def test(input="data_release_cycle_table"):
 def queries():
     if request.method == 'POST':
         print(request.json['column'])
-    return 'hola'
+    return request.json['column']
 
 

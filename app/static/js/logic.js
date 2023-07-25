@@ -14,7 +14,7 @@ function hi(element){
             "Content-Type": "application/json"
             },
         body: JSON.stringify({column: element.value})
-        }).then(data.JSON()).then(data => {})
+        }).then(data => data.JSON()).then(data => {})
 }
 
 // function hi(){fetch(URL,
