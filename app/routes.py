@@ -5,10 +5,10 @@ from flask import render_template,jsonify
 
 
 @app.route("/<input>")
-def test(input):
+def test(input="data_release_cycle_table"):
     dict={"data_release_cycle_table":model.data_release_cycle_table,
           "gender_table":model.gender_table}
-    result=dict[input].query.all()
+    result=dict[input].query.first().select.first().marital_status
     print(result)
     return render_template("index.html",result=result)
 
