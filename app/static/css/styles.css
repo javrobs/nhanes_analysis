@@ -1,20 +1,55 @@
-:root {
-    --color1: blue;
-    --accent: red;
-    --back: white;
-    --text: black;
-  }
+/* https://coolors.co/db5461-686963-8aa29e-3d5467-f1edee */
+/* For bars: https://coolors.co/eac435-345995-e40066-03cea4-fb4d3d */
+/* https://coolors.co/ddfff7-93e1d8-ffa69e-aa4465-462255 */
+/* :root {
+    --color1: #81A4CD;
+    --color2:#3E7CB1;
+    --accent: #F17300;
+    --back: #DBE4EE;
+    --text: #054A91;
+  } */
 
+/* https://coolors.co/543b6b-587ab8-8fb5d1-dee8ef-d93662 */
+:root {
+    --color1: #ADD8DE;
+    --color2:#D0E5E9;
+    --accent: #B80000;
+    --back: #F2F8FA;
+    --text: #00383D;
+  }
 body{
     background-color: var(--back);
     color: var(--text);
 }
 
-h1{
-    color:var(--color1);
+select{
+    width:100%;
+}
+#header{
+    background-color: var(--color1);
+    padding:20px;
+    text-align: center;
 }
 
-.special{
-    color:var(--accent);
-    /* font-style:italic; */
+#filter{
+    background-color: var(--accent);
+    color:var(--back);
+    padding:20px;
+    height:100%;
+}
+#plot{
+    background-color: var(--color2);
+    padding:20px;
+}
+
+#title{
+    font-weight: 700;
+}
+
+#pageDescription{
+    font-style: italic;
+}
+
+td,th{
+    border:1px solid black;
 }
