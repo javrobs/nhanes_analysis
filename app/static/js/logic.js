@@ -1,24 +1,30 @@
-// let URL=address+"/test"
+const URL = '/queries';
 
-// d3.json(URL).then(data=>{
-//     let text=document.querySelector("#text");
-//     text.innerHTML=`<span class="special">${data[0]}</span> at <a href=${URL}>${URL}</a>`;
-// })
+const value = 'test';
 
 
+function hi(element){
+    // console.log(element.value)
+    fetch(URL,
+        {
+        method: 'POST',
+        mode :'cors',
+        headers: 
+            {
+            "Content-Type": "application/json"
+            },
+        body: JSON.stringify({column: element.value})
+        }).then(data.JSON()).then(data => {})
+}
 
-// function populate(year){
-//     if (year.value!=="default"){
-//     let URL=address+"/columns/"+year.value;
-//     fetch(URL).then(data=>data.json()).then(data=>{
-//         console.log(data);
-//         let columnSelect=document.querySelector("#columns");
-//         columnSelect.innerHTML="";
-//         columnSelect.removeAttribute("disabled")
-//         data.forEach(one=>{
-//             columnSelect.innerHTML+=`<option value=${one}>${one}</option>`
-//         })
-//     });
-    
-// }
+// function hi(){fetch(URL,
+//     {
+//     method: 'POST',
+//     mode :'cors',
+//     headers: 
+//         {
+//         "Content-Type": "application/json"
+//         },
+//     body: JSON.stringify({column: value})
+//     }).then(data.JSON()).then(data => {})
 // }

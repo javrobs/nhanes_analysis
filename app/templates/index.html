@@ -19,12 +19,14 @@
                         <label for="year">Year:</label>
                     </td>
                     <td>
-                        <select id="year" onchange="populate(this)">
-                            <option value="default">Select a year</option>
-                            {% for each in result %}
-                            <option value={{each.id}}>{{each.description}}</option>
-                            {% endfor %}
+                        <div class="dropdown">
+                            <select id="filter" onchange="hi(this);">
+                                <option value="default">Select a filter:</option>
+                                {% for key, value in variables_d.items() %}
+                                <option value={{key}}>{{value}}</option>
+                                {% endfor %}
                         </select>
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -39,6 +41,7 @@
                 </tr>
             </table>    
         </div>
+    </br>
         <script src="https://d3js.org/d3.v5.min.js"></script>
         <script src="../static/js/address.js"></script>
         <script src="../static/js/logic.js"></script>
