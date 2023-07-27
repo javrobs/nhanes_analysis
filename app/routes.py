@@ -59,32 +59,74 @@ def queries():
         column=request.json['column']
         #Execute query in SQL, choose all columns retrieved, rename them, from main table join
         #with foreign key on ID = column value, grouped by requested column in "column"
-        query=db.engine.connect().execute(db.text(f"""
+        query_1=db.engine.connect().execute(db.text(f"""
             SELECT 
                   main.{column} as value_id,
                   ref.description as desc,
-                  AVG(main.money_spent_at_supermarket_grocery_store) as groceries,
-                  AVG(main.money_spent_on_nonfood_items) as non_food,
-                  AVG(main.money_spent_on_food_at_other_stores) as other_stores,
+                  AVG(
+                    SELECT money_spent_at_supermarket_grocery_store
+                    FROM main_table
+                    WHERE money_spent_at_supermarket_grocery_store <= 8400
+                  ) as groceries,
+                  AVG(
+                    SELECT money_spent_on_nonfood_items
+                    FROM main_table
+                    WHERE money_spent_on_nonfood_items <= 8400
+                  ) as non_food,
+                  AVG(
+                    SELECT money_spent_on_food_at_other_stores
+                    FROM main_table
+                    WHERE money_spent_on_food_at_other_stores <= 8400
+                  ) as other_stores,
+                  AVG(
+                    SELECT money_spent_on_eating_out
+                    FROM main_table
+                    WHERE money_spent_on_eating_out <= 8400
+                  ) as eating_out,
+                  AVG(
+                    SELECT money_spent_on_carryout_delivered_foods
+                    FROM main_table
+                    WHERE money_spent_on_carryout_delivered_foods <= 8400
+                  ) as delivered
+                  COUNT(*) as count
+            FROM main_table main
+            INNER JOIN {reference_table[column]} ref
+            ON main.{column}=ref.id
+            WHERE main.data_release_cycle = 5
+            GROUP BY main.{column}
+            """))
+        query_2=db.engine.connect().execute(db.text(f"""
+            SELECT 
+                  main.{column} as value_id,
+                  ref.description as desc,
+                  AVG(money_spent_at_supermarket_grocery_store) as groceries,
+                  AVG(money_spent_on_nonfood_items) as non_food,
+                  AVG(money_spent_on_food_at_other_stores) as other_stores,
                   AVG(money_spent_on_eating_out) as eating_out,
                   AVG(money_spent_on_carryout_delivered_foods) as delivered,
                   COUNT(*) as count
             FROM main_table main
             INNER JOIN {reference_table[column]} ref
             ON main.{column}=ref.id
-            GROUP BY main.{column}"""))
+            WHERE main.data_release_cycle = 10
+            GROUP BY main.{column}
+            """))
         #return list of dictionaries to fetch call
         #define empty list "response"
+        queries = [query_1, query_2]
+        years = ['2007-2008', '2017-2018']
         response=[]
-        for i in query:
-            response.append({"id":i["value_id"],
-                             "description":i["desc"],
-                             "groceries":round(i["groceries"],2),
-                             "non_food":round(i["non_food"],2),
-                             "other_stores":round(i["other_stores"],2),
-                             "eating_out":round(i["eating_out"],2),
-                             "delivered":round(i["delivered"],2),
-                             "count":i["count"]})
+        for j, query in enumerate(queries):
+            for i in query:
+                response.append({"id":i["value_id"],
+                                "year": years[j],
+                                "description":i["desc"],
+                                "groceries":round(i["groceries"],2),
+                                "non_food":round(i["non_food"],2),
+                                "other_stores":round(i["other_stores"],2),
+                                "eating_out":round(i["eating_out"],2),
+                                "delivered":round(i["delivered"],2),
+                                "count":i["count"]})
         return jsonify(response)
     else:
         return redirect(url_for("home"))

@@ -22,6 +22,7 @@ function populateTable(data){
     let headerRow=document.createElement("tr");
     headerRow.innerHTML=`
     <th>ID</th>
+    <th>Year</th>
     <th>Description</th>
     <th>Count</th>
     <th>Eating Out</th>
@@ -35,6 +36,7 @@ function populateTable(data){
         let row=document.createElement("tr");
         row.innerHTML=`
         <td>${line["id"]}</td>
+        <td>${line["year"]}</td>
         <td>${line["description"]}</td>
         <td>${line["count"]}</td>
         <td>${line["eating_out"]}</td>
