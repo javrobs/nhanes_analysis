@@ -51,83 +51,50 @@ def home(input="data_release_cycle_table"):
     #Return in variables_d all pairs of names/variables
     return render_template("index.html", variables_d=variables_d)
 
-@app.route('/queries', methods=['POST'])
+@app.route('/queries', methods=['POST','GET'])
 def queries():
-    
     if request.method == 'POST':
         #Store column chosen in column variable
         column=request.json['column']
-        #Execute query in SQL, choose all columns retrieved, rename them, from main table join
-        #with foreign key on ID = column value, grouped by requested column in "column"
-        query_1=db.engine.connect().execute(db.text(f"""
-            SELECT 
-                  main.{column} as value_id,
-                  ref.description as desc,
-                  AVG(
-                    SELECT money_spent_at_supermarket_grocery_store
-                    FROM main_table
-                    WHERE money_spent_at_supermarket_grocery_store <= 8400
-                  ) as groceries,
-                  AVG(
-                    SELECT money_spent_on_nonfood_items
-                    FROM main_table
-                    WHERE money_spent_on_nonfood_items <= 8400
-                  ) as non_food,
-                  AVG(
-                    SELECT money_spent_on_food_at_other_stores
-                    FROM main_table
-                    WHERE money_spent_on_food_at_other_stores <= 8400
-                  ) as other_stores,
-                  AVG(
-                    SELECT money_spent_on_eating_out
-                    FROM main_table
-                    WHERE money_spent_on_eating_out <= 8400
-                  ) as eating_out,
-                  AVG(
-                    SELECT money_spent_on_carryout_delivered_foods
-                    FROM main_table
-                    WHERE money_spent_on_carryout_delivered_foods <= 8400
-                  ) as delivered
-                  COUNT(*) as count
-            FROM main_table main
-            INNER JOIN {reference_table[column]} ref
-            ON main.{column}=ref.id
-            WHERE main.data_release_cycle = 5
-            GROUP BY main.{column}
-            """))
-        query_2=db.engine.connect().execute(db.text(f"""
-            SELECT 
-                  main.{column} as value_id,
-                  ref.description as desc,
-                  AVG(money_spent_at_supermarket_grocery_store) as groceries,
-                  AVG(money_spent_on_nonfood_items) as non_food,
-                  AVG(money_spent_on_food_at_other_stores) as other_stores,
-                  AVG(money_spent_on_eating_out) as eating_out,
-                  AVG(money_spent_on_carryout_delivered_foods) as delivered,
-                  COUNT(*) as count
-            FROM main_table main
-            INNER JOIN {reference_table[column]} ref
-            ON main.{column}=ref.id
-            WHERE main.data_release_cycle = 10
-            GROUP BY main.{column}
-            """))
-        #return list of dictionaries to fetch call
-        #define empty list "response"
-        queries = [query_1, query_2]
-        years = ['2007-2008', '2017-2018']
+        
+        #CASE TO BE DELETED, HERE TO AVOID BREAKING SITE
+        if column=="ratio_of_family_income_to_poverty":
+            return jsonify([{"id":"RATIO OF INCOME TO POVERTY PENDING"}])
+        #Create response list to populate with query response as dictionaries
         response=[]
-        for j, query in enumerate(queries):
-            for i in query:
-                response.append({"id":i["value_id"],
-                                "year": years[j],
-                                "description":i["desc"],
-                                "groceries":round(i["groceries"],2),
-                                "non_food":round(i["non_food"],2),
-                                "other_stores":round(i["other_stores"],2),
-                                "eating_out":round(i["eating_out"],2),
-                                "delivered":round(i["delivered"],2),
-                                "count":i["count"]})
+        #Define cycles and years
+        data_release_cycles=[5,10]
+        years=['2007-2008','2017-2018']
+        "Iterate both as a zip"
+        for year,cycle in zip(years,data_release_cycles):
+            #Generate text for sql query
+            SQL_text=f"""
+            SELECT 
+                  main.{column} as id,
+                  ref.description as description,
+                  '{year}' as year,
+                  ROUND(AVG(money_spent_at_supermarket_grocery_store),2) as groceries,
+                  ROUND(AVG(money_spent_on_nonfood_items),2) as non_food,
+                  ROUND(AVG(money_spent_on_food_at_other_stores),2) as other_stores,
+                  ROUND(AVG(money_spent_on_eating_out),2) as eating_out,
+                  ROUND(AVG(money_spent_on_carryout_delivered_foods),2) as delivered,
+                  COUNT(*) as count
+            FROM main_table main
+            INNER JOIN {reference_table[column]} ref
+            ON main.{column}=ref.id
+            WHERE main.data_release_cycle = {cycle}
+            GROUP BY main.{column}"""
+            #Connect with engine using with to ensure connection is broken after query
+            with db.engine.connect() as connection:
+                #Query the engine using text defined above and store in results
+                results=connection.execute(db.text(SQL_text))
+            #For each line in query results append mapping (dictionary like structure in each row) to response
+            for i in results:
+                #Transform mapping object into dictionary and append
+                response.append(dict(i._mapping))
+        #Return list of dictionaries
         return jsonify(response)
+    #Case where method is not post (i.e. someone writes the address on the browser)
     else:
         return redirect(url_for("home"))
 
