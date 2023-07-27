@@ -57,9 +57,11 @@ def queries():
         #Store column chosen in column variable
         column=request.json['column']
         
-        #CASE TO BE DELETED, HERE TO AVOID BREAKING SITE
+        #CASE TO BE DELETED, HERE TO AVOID BREAKING SQL IF RATIO OF FAMILY INCOME TO POVERTY IS CHOSEN
         if column=="ratio_of_family_income_to_poverty":
             return jsonify([{"id":"RATIO OF INCOME TO POVERTY PENDING"}])
+        
+
         #Create response list to populate with query response as dictionaries
         response=[]
         #Define cycles and years
