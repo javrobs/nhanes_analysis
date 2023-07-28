@@ -9,7 +9,7 @@ function plot(data){
     data.forEach(line=>{
         if (line.year=="2007-2008"){
             // console.log(line);
-            y.push(`${line.description}<br>(${line["count"]})`);
+            y.push(`${line.description.replace("/","<br>").replace("/","<br>")}<br>(${line["count"]})`);
             groceries.push(line["groceries"]);
             non_food.push(line["non_food"]);
             other_stores.push(line["other_stores"]);
@@ -71,7 +71,9 @@ function plot(data){
         barmode: 'stack',
         autosize:true,
         height:(window.innerHeight-40),
-        title:"Average Monthly Consumption in the US"};
+        automargin:true,
+        margin:{b:40,l:220,t:100,r:0,autoexpand:true},
+        title:"Average Monthly Consumption in the US (2007-2008 ONLY)"};
 
     Plotly.newPlot('plot', data, layout);
     window.addEventListener("resize", ()=>{

@@ -22,10 +22,6 @@ html,body{
     height:100vh;
     overflow:hidden;
 }
-body{
-    background-color: var(--back);
-    color: var(--text);
-}
 
 select{
     width:100%;
@@ -38,7 +34,9 @@ select{
 #header{
     background-color: var(--color1);
     color:var(--text);
+    text-align: center;
     padding:20px;
+    border-bottom: 5px solid var(--text);
 }
 
 #filter{
@@ -49,9 +47,33 @@ select{
     /* height:80%; */
 }
 
+i{
+    height:12px;
+    width:12px;
+}
+#labelsContainer{
+    /* flex-wrap:wrap;
+    gap:3px; */
+    margin-top: 5px;
+    /* box-shadow: inset 0 0 3px 3px black; */
+    padding:5px inherit;
+}
+
+.label{
+    padding:3px 8px;
+    border-radius: 8px;
+    justify-content: space-between;
+    align-items: stretch;
+    gap:3px;
+}
+.label:hover{
+    background-color: #ADD8DE;    
+    color:black;
+}
+
 #plotContainer{
-    background-color: var(--color2);
     padding:20px;
+    background-color: var(--back);
 }
 
 #title{
@@ -69,8 +91,10 @@ select{
 
 table{
     width:100%;
-    background-color: #745C97;
+    background-color: var(--back);
+    color:black;
 }
 td,th{
     border:1px solid black;
+    padding:2px;
 }
