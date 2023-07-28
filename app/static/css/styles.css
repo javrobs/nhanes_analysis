@@ -13,10 +13,15 @@
 :root {
     --color1: #ADD8DE;
     --color2:#D0E5E9;
-    --accent: #B80000;
+    --accent: #1A1627;
     --back: #F2F8FA;
     --text: #00383D;
   }
+
+html,body{
+    height:100vh;
+    overflow:hidden;
+}
 body{
     background-color: var(--back);
     color: var(--text);
@@ -25,19 +30,26 @@ body{
 select{
     width:100%;
 }
+
+#sideBar{
+    height:100vh;
+}
+
 #header{
     background-color: var(--color1);
+    color:var(--text);
     padding:20px;
-    text-align: center;
 }
 
 #filter{
     background-color: var(--accent);
     color:var(--back);
     padding:20px;
-    height:100%;
+    flex-grow:1;
+    /* height:80%; */
 }
-#plot{
+
+#plotContainer{
     background-color: var(--color2);
     padding:20px;
 }
@@ -46,10 +58,19 @@ select{
     font-weight: 700;
 }
 
+.row{
+    margin-left:0;
+    margin-right:0;
+}
+
 #pageDescription{
     font-style: italic;
 }
 
+table{
+    width:100%;
+    background-color: #745C97;
+}
 td,th{
     border:1px solid black;
 }

@@ -12,11 +12,15 @@ function filter(element){
         }).then(data=>data.json()).then(data => {
             console.log(data);
             populateTable(data);
+            plot(data);
+            // showLabels(data);
         })
 }
 
+
+// DEMONSTRATIVE FUNCTION, NOT FINAL 
 function populateTable(data){
-    let plot=document.querySelector("#plot");
+    let plot=document.querySelector("#table");
     plot.innerHTML="";
     let table=document.createElement("table");
     let headerRow=document.createElement("tr");
@@ -25,11 +29,6 @@ function populateTable(data){
     <th>Year</th>
     <th>Description</th>
     <th>Count</th>
-    <th>Eating Out</th>
-    <th>Groceries</th>
-    <th>Non-food</th>
-    <th>Other Stores</th>
-    <th>Delivered</th>
     `
     table.appendChild(headerRow);
     data.forEach(line=>{
@@ -39,11 +38,6 @@ function populateTable(data){
         <td>${line["year"]}</td>
         <td>${line["description"]}</td>
         <td>${line["count"]}</td>
-        <td>${line["eating_out"]}</td>
-        <td>${line["groceries"]}</td>
-        <td>${line["non_food"]}
-        <td>${line["other_stores"]}</td>
-        <td>${line["delivered"]}</td>
         `
         table.appendChild(row);
     })

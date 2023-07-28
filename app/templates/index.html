@@ -9,27 +9,40 @@
         <link rel="stylesheet" type="text/css" href="../static/css/styles.css">
     </head>
     <body>
-        <div class="container-flex">
+        <!-- <div class="container-flex">
             <div class="row" id="header">
             <h1 id="title">National Health and Nutrition Examination Survey</h1>
             <p id="pageDescription">Text placeholder for project explanation and how to use site?</p>
             </div>
-        </div>
-        <div class="container-lg">
+        </div> -->
+        <div class="container-flex">
             <div class="row">
-                <div class="col-md-3" id="filter">
-                <h4>Filter by:</h4>
-                <select onchange="filter(this);">
-                    <option value="default">Select a filter...</option>
-                    {% for key, value in variables_d.items() %}
-                    <option value={{key}}>{{value}}</option>
-                    {% endfor %}
-                </select>
+                <div class="d-none d-md-flex flex-column col-3 px-0" id="sideBar">
+                    <div class="row" id="header">
+                        <h3 id="title">National Health and Nutrition Examination Survey</h3>
+                        <p id="pageDescription">Text placeholder for project explanation and how to use site?</p>
+                    </div>
+                    <div class="row d-block" id="filter">
+                        <div class="col-12">
+                        <h4>Filter by:</h4>
+                        <select onchange="filter(this);">
+                            <option value="default">Select a filter...</option>
+                            {% for key, value in variables_d.items() %}
+                            <option value={{key}}>{{value}}</option>
+                            {% endfor %}
+                        </select>
+                        </div>
+                        <div class="pt-4" id="table"></div>
+                    </div>
                 </div>
-                <div class="col-md-9" id="plot"></div>
+                <div class="col-md-9" id="plotContainer">
+                    <div id="plot"></div>
+                </div>
             </div>  
         </div>
     </br>
-        <script src="../static/js/logic.js"></script>
+        <script src="https://cdn.plot.ly/plotly-2.24.1.min.js" charset="utf-8"></script>
+        <script src="../static/js/filters.js"></script>
+        <script src="../static/js/plot.js"></script>
     </body>
 </html>
