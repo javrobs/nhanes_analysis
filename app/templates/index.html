@@ -14,21 +14,24 @@
             <div class="row">
                 <div class="d-none d-md-flex flex-column col-3 px-0" id="sideBar">
                     <div class="row" id="header">
-                        <h2 id="title">NHANES<br>Food Consumption<br>Results Analysis</h2>
-                        <p id="pageDescription">National Health and Nutrition Examination<br>Survey Results for 2007-2008 and 2017-2018</p>
-                    </div>
-                    <div class="row d-block" id="filter">
-                        <div>
-                        <h3>Filter by:</h3>
-                        <select onchange="filter(this);">
-                            <option value="default">Select a filter...</option>
-                            {% for key, value in variables_d.items() %}
-                            <option value={{key}}>{{value}}</option>
-                            {% endfor %}
-                        </select>
+                        <div class="col-12">
+                            <h3 id="title">NHANES<br>Food Spending</h3>
+                            <p id="pageDescription">National Health and Nutrition Examination<br>2007-2008 and 2017-2018</p>
                         </div>
-                        <!-- <div class="pt-4" id="table"></div> -->
-                        <div id="labelsContainer"></div>
+                    </div>
+                    <div class="d-flex flex-column row" id="filter">
+                        <div class="col-12" id="filter-by">
+                            <h3>Filter by:</h3>
+                            <select onchange="filter(this);">
+                                <option value="default">Select a filter...</option>
+                                {% for key, value in variables_d.items() %}
+                                <option value={{key}}>{{value}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-12" id="labelsContainer">
+
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-9" id="plotContainer">

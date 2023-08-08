@@ -44,19 +44,22 @@ select{
     color:var(--back);
     padding:20px;
     flex-grow:1;
-    /* height:80%; */
+    flex-wrap: nowrap;
 }
 
 i{
     height:12px;
     width:12px;
 }
+
 #labelsContainer{
-    /* flex-wrap:wrap;
-    gap:3px; */
     margin-top: 5px;
-    /* box-shadow: inset 0 0 3px 3px black; */
+    flex-grow:1;
     padding:5px inherit;
+}
+
+#filter-by{
+    flex-grow:0;
 }
 
 .label{

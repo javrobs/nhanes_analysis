@@ -12,52 +12,25 @@ function filter(element){
         }).then(data=>data.json()).then(data => {
             console.log(data);
             plot(data);
-            showLabels(data);
+            filterDeeper(data,element.value);
         })
 }
 
-function showLabels(data){
+function filterDeeper(data,column){
+    let selectedFilter=document.querySelector(`option[value=${column}]`).innerHTML;
     let container=document.querySelector("#labelsContainer");
-    container.innerHTML="<h5>Filter deeper:</h5>";
-    let labelsShowing=[]
+    container.innerHTML=`<h5>Filter deeper on ${selectedFilter}:</h5>`;
+    let options=[];
+    let newSelect=document.createElement("select")
     data.forEach(line=>{
-        console.log(labelsShowing);
+        console.log(options);
         let value=line["description"];
-        if (labelsShowing.includes(value)===false){
-            labelsShowing.push(value);
-            let label=document.createElement("div");
-            label.classList.add("label");
-            label.classList.add("d-flex");
-            label.innerHTML=`${value}`;
-            container.appendChild(label);
+        if (options.includes(value)===false&&value!=="Don't know"&&value!=="Refused"){
+            options.push(value);
+            let label=document.createElement("option");
+            label.innerHTML=value;
+            newSelect.appendChild(label);
         }
     });
-
-
-}
-
-// // DEMONSTRATIVE FUNCTION, NOT FINAL 
-// function populateTable(data){
-//     let plot=document.querySelector("#table");
-//     plot.innerHTML="";
-//     let table=document.createElement("table");
-//     let headerRow=document.createElement("tr");
-//     headerRow.innerHTML=`
-//     <th>ID</th>
-//     <th>Year</th>
-//     <th>Description</th>
-//     <th>Count</th>
-//     `
-//     table.appendChild(headerRow);
-//     data.forEach(line=>{
-//         let row=document.createElement("tr");
-//         row.innerHTML=`
-//         <td>${line["id"]}</td>
-//         <td>${line["year"]}</td>
-//         <td>${line["description"]}</td>
-//         <td>${line["count"]}</td>
-//         `
-//         table.appendChild(row);
-//     })
-//     plot.appendChild(table);
-// }
+    container.appendChild(newSelect);
+};
