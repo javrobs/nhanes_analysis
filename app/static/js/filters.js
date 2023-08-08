@@ -19,7 +19,7 @@ function filter(element){
 function filterDeeper(data,column){
     let selectedFilter=document.querySelector(`option[value=${column}]`).innerHTML;
     let container=document.querySelector("#labelsContainer");
-    container.innerHTML=`<h5>Filter deeper on ${selectedFilter}:</h5>`;
+    container.innerHTML=`<h5>Filter deeper on <span style="color:#">${selectedFilter}</span>:</h5>`;
     let options=[];
     let newSelect=document.createElement("select")
     data.forEach(line=>{

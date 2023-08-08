@@ -35,9 +35,9 @@ reference_table={'gender': 'gender_table',
             'marital_status': 'marital_status_table',
             'total_number_of_people_in_the_household': 'total_number_of_people_table',
             'total_number_of_people_in_the_family': 'total_number_of_people_table',
+            'ratio_of_family_income_to_poverty':'ratio_of_family_income_to_poverty_table',
             'annual_household_income': 'annual_income_table',
             'annual_family_income': 'annual_income_table',
-            'ratio_of_family_income_to_poverty': 'NOJOIN',
             'hh_ref_person_gender': "gender_table",
             'hh_ref_person_age': "age_groups_table",
             'hh_ref_person_education_level': "education_level_adults_table",
@@ -57,9 +57,9 @@ def queries():
         #Store column chosen in column variable
         column=request.json['column']
         
-        #CASE TO BE DELETED, HERE TO AVOID BREAKING SQL IF RATIO OF FAMILY INCOME TO POVERTY IS CHOSEN
-        if column=="ratio_of_family_income_to_poverty":
-            return jsonify([{"id":"RATIO OF INCOME TO POVERTY PENDING"}])
+        # #CASE TO BE DELETED, HERE TO AVOID BREAKING SQL IF RATIO OF FAMILY INCOME TO POVERTY IS CHOSEN
+        # if column=="ratio_of_family_income_to_poverty":
+        #     return jsonify([{"id":"RATIO OF INCOME TO POVERTY PENDING"}])
         
 
         #Create response list to populate with query response as dictionaries

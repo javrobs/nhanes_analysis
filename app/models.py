@@ -17,7 +17,7 @@ class main_table(db.Model):
     total_number_of_people_in_the_family=db.Column(db.Integer,db.ForeignKey("total_number_of_people_table.id"))
     annual_household_income=db.Column(db.Integer,db.ForeignKey("annual_income_table.id"))
     annual_family_income=db.Column(db.Integer,db.ForeignKey("annual_income_table.id"))
-    ratio_of_family_income_to_poverty=db.Column(db.Float)
+    ratio_of_family_income_to_poverty=db.Column(db.Integer,db.ForeignKey("ratio_of_family_income_to_poverty_table.id"))
     hh_ref_person_gender=db.Column(db.Integer,db.ForeignKey("gender_table.id"))
     hh_ref_person_age=db.Column(db.Integer,db.ForeignKey("age_groups_table.id"))
     hh_ref_person_education_level=db.Column(db.Integer,db.ForeignKey("education_level_adults_table.id"))
@@ -85,3 +85,6 @@ class annual_income_table(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     description=db.Column(db.String)
     
+class ratio_of_family_income_to_poverty_table(db.Model):
+    id=db.Column(db.Integer,primary_key=True)
+    description=db.Column(db.String)
