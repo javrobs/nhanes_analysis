@@ -22,7 +22,7 @@
                     <div class="d-flex flex-column row" id="filter">
                         <div class="col-12" id="filter-by">
                             <h3>Filter by:</h3>
-                            <select onchange="filter(this);">
+                            <select onchange="filter(this);" id="first-filter">
                                 <option value="default">Select a filter...</option>
                                 {% for key, value in variables_d.items() %}
                                 <option value={{key}}>{{value}}</option>
@@ -35,6 +35,10 @@
                     </div>
                 </div>
                 <div class="col-md-9" id="plotContainer">
+                    <div class="" id="instructions">
+                        <h2>Instructions</h2>
+                        <p>Start by selecting a filter in the "Filter by" dropdown menu.</p>
+                    </div>
                     <div id="plot"></div>
                 </div>
             </div>  

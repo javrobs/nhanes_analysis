@@ -9,7 +9,7 @@ function plot(data){
     data.forEach(line=>{
         if (line.year=="2007-2008"){
             // console.log(line);
-            y.push(`${line.description.replace("/","<br>").replace("/","<br>")}<br>(${line["count"]})`);
+            y.push(`${line.description.replace("~","<br>")}<br><em>(${line["count"]})</em>`);
             groceries.push(line["groceries"]);
             non_food.push(line["non_food"]);
             other_stores.push(line["other_stores"]);
@@ -78,11 +78,12 @@ function plot(data){
         height:(window.innerHeight-40),
         legend:{"orientation":"h"},
         automargin:true,
-        margin:{b:200,l:220,t:100,r:30,autoexpand:true},
+        margin:{b:200,l:160,t:100,r:30,autoexpand:true},
         title:"Average Monthly Spending on food in the US (2007-2008 ONLY)"};
 
     Plotly.newPlot('plot', data, layout);
     window.addEventListener("resize", ()=>{
+        console.log("listening for resize");
         let plotWidth=document.querySelector("#plotContainer").offsetWidth-40;
         let plotHeight=window.innerHeight-40;
         Plotly.update('plot',{},{height:plotHeight,width:plotWidth});

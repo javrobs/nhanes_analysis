@@ -9,7 +9,7 @@ variables_d = {'gender': 'Gender',
             'served_in_the_us_armed_forces': 'Served in the Army',
             'country_of_birth': 'Country of birth',
             'citizenship_status': 'Citizenship status',
-            'education_level_children_youth_6_19': 'Education level (children)',
+            # 'education_level_children_youth_6_19': 'Education level (children)',
             'education_level_adults_20': 'Education level (adults)',
             'marital_status': 'Marital status',
             'total_number_of_people_in_the_household': 'Household size',
@@ -30,7 +30,7 @@ reference_table={'gender': 'gender_table',
             'served_in_the_us_armed_forces': 'served_in_the_us_armed_forces_table',
             'country_of_birth': 'country_of_birth_table',
             'citizenship_status': 'citizenship_status_table',
-            'education_level_children_youth_6_19': 'education_level_children_table',
+            # 'education_level_children_youth_6_19': 'education_level_children_table',
             'education_level_adults_20': 'education_level_adults_table',
             'marital_status': 'marital_status_table',
             'total_number_of_people_in_the_household': 'total_number_of_people_table',
@@ -56,12 +56,6 @@ def queries():
     if request.method == 'POST':
         #Store column chosen in column variable
         column=request.json['column']
-        
-        # #CASE TO BE DELETED, HERE TO AVOID BREAKING SQL IF RATIO OF FAMILY INCOME TO POVERTY IS CHOSEN
-        # if column=="ratio_of_family_income_to_poverty":
-        #     return jsonify([{"id":"RATIO OF INCOME TO POVERTY PENDING"}])
-        
-
         #Create response list to populate with query response as dictionaries
         response=[]
         #Define cycles and years
