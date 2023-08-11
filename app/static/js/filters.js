@@ -1,10 +1,16 @@
 const URL = '/queries';
 const instructions=document.querySelector("#instructions");
 const plotarea=document.querySelector("#plot");
+const year2007=document.querySelector("#first-year");
+const year2017=document.querySelector("#second-year");
+const filterElement=document.querySelector("#first-filter");
 
-function filter(element){
-    console.log(element.value);
-    let value=element.value;
+year2007.addEventListener("change",filter);
+
+year2017.addEventListener("change",filter);
+
+function filter(){
+    let value=filterElement.value;
     if(value==="default"){
         instructions.classList.remove("d-none");
         plotarea.classList.add("d-none");
@@ -18,11 +24,10 @@ function filter(element){
                 {
                 "Content-Type": "application/json"
                 },
-            body: JSON.stringify({column: element.value})
+            body: JSON.stringify({column: value})
             }).then(data=>data.json()).then(data => {
-                console.log(data);
-                plot(data);
-                filterDeeper(data,element.value);
+                plot(data,year2007.checked);
+                filterDeeper(data,value);
             });
     }
 }

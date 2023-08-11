@@ -74,6 +74,36 @@ def queries():
                   ROUND(AVG(money_spent_on_food_at_other_stores),2) as other_stores,
                   ROUND(AVG(money_spent_on_eating_out),2) as eating_out,
                   ROUND(AVG(money_spent_on_carryout_delivered_foods),2) as delivered,
+                  ROUND(AVG(money_spent_at_supermarket_grocery_store)*100/
+                  (AVG(money_spent_at_supermarket_grocery_store)+
+                  AVG(money_spent_on_nonfood_items)+
+                  AVG(money_spent_on_food_at_other_stores)+
+                  AVG(money_spent_on_eating_out)+
+                  AVG(money_spent_on_carryout_delivered_foods)),2) as groceries_percentage,
+                  ROUND(AVG(money_spent_on_nonfood_items)*100/
+                  (AVG(money_spent_at_supermarket_grocery_store)+
+                  AVG(money_spent_on_nonfood_items)+
+                  AVG(money_spent_on_food_at_other_stores)+
+                  AVG(money_spent_on_eating_out)+
+                  AVG(money_spent_on_carryout_delivered_foods)),2) as non_food_percentage,
+                  ROUND(AVG(money_spent_on_food_at_other_stores)*100/
+                  (AVG(money_spent_at_supermarket_grocery_store)+
+                  AVG(money_spent_on_nonfood_items)+
+                  AVG(money_spent_on_food_at_other_stores)+
+                  AVG(money_spent_on_eating_out)+
+                  AVG(money_spent_on_carryout_delivered_foods)),2) as other_stores_percentage,
+                  ROUND(AVG(money_spent_on_eating_out)*100/
+                  (AVG(money_spent_at_supermarket_grocery_store)+
+                  AVG(money_spent_on_nonfood_items)+
+                  AVG(money_spent_on_food_at_other_stores)+
+                  AVG(money_spent_on_eating_out)+
+                  AVG(money_spent_on_carryout_delivered_foods)),2) as eating_out_percentage,
+                  ROUND(AVG(money_spent_on_carryout_delivered_foods)*100/
+                  (AVG(money_spent_at_supermarket_grocery_store)+
+                  AVG(money_spent_on_nonfood_items)+
+                  AVG(money_spent_on_food_at_other_stores)+
+                  AVG(money_spent_on_eating_out)+
+                  AVG(money_spent_on_carryout_delivered_foods)),2) as delivered_percentage,
                   COUNT(*) as count
             FROM main_table main
             INNER JOIN {reference_table[column]} ref

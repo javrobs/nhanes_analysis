@@ -20,9 +20,16 @@
                         </div>
                     </div>
                     <div class="d-flex flex-column row" id="filter">
+                        <h3>Years:</h3>
+                        <div class="col-12 text-center mb-3">
+                            <input type="radio" name="year" id="first-year" checked>
+                            <label for="first-year">2007-2008</label>
+                            <input type="radio" name="year" id="second-year" class="ms-3">
+                            <label for="second-year">2017-2018</label>
+                        </div>
                         <div class="col-12" id="filter-by">
                             <h3>Filter by:</h3>
-                            <select onchange="filter(this);" id="first-filter">
+                            <select onchange="filter();" id="first-filter">
                                 <option value="default">Select a filter...</option>
                                 {% for key, value in variables_d.items() %}
                                 <option value={{key}}>{{value}}</option>
