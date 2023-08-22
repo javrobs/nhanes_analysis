@@ -57,14 +57,14 @@ def queries():
         #Store column chosen in column variable
         column=request.json['column']
         #Create response list to populate with query response as dictionaries
-        response=[]
+        response={'all_data': [], 'nulls': []}
         #Define cycles and years
         data_release_cycles=[5,10]
         years=['2007-2008','2017-2018']
         "Iterate both as a zip"
         for year,cycle in zip(years,data_release_cycles):
             #Generate text for sql query
-            SQL_text=f"""
+            SQL_text_1=f"""
             SELECT 
                   main.{column} as id,
                   ref.description as description,
@@ -110,14 +110,23 @@ def queries():
             ON main.{column}=ref.id
             WHERE main.data_release_cycle = {cycle}
             GROUP BY main.{column}"""
+            SQL_text_2=f"""
+            SELECT COUNT(*) as missing,
+                '{year}' as year
+            FROM main_table main
+            WHERE main.data_release_cycle = {cycle} AND main.{column} IS NULL
+            """
             #Connect with engine using with to ensure connection is broken after query
             with db.engine.connect() as connection:
                 #Query the engine using text defined above and store in results
-                results=connection.execute(db.text(SQL_text))
+                results_1=connection.execute(db.text(SQL_text_1))
+                results_2=connection.execute(db.text(SQL_text_2)).first()
             #For each line in query results append mapping (dictionary like structure in each row) to response
-            for i in results:
+            for i in results_1:
                 #Transform mapping object into dictionary and append
-                response.append(dict(i._mapping))
+                response['all_data'].append(dict(i._mapping))
+            #Transform mapping object into dictionary and append
+            response['nulls'].append(dict(results_2._mapping))
         #Return list of dictionaries
         return jsonify(response)
     #Case where method is not post (i.e. someone writes the address on the browser)

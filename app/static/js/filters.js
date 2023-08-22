@@ -26,6 +26,7 @@ function filter(){
                 },
             body: JSON.stringify({column: value})
             }).then(data=>data.json()).then(data => {
+                console.log(data);
                 plot(data,year2007.checked);
                 filterDeeper(data,value);
             });
@@ -38,7 +39,7 @@ function filterDeeper(data,column){
     container.innerHTML=`<h5>Filter deeper on <span style="color:#">${selectedFilter}</span>:</h5>`;
     let options=[];
     let newSelect=document.createElement("select")
-    data.forEach(line=>{
+    data.all_data.forEach(line=>{
         console.log(options);
         let value=line["description"];
         if (options.includes(value)===false&&value!=="Don't know"&&value!=="Refused"){

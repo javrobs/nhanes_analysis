@@ -13,7 +13,8 @@ function plot(data,is2007){
     let otherStoresPercentage=[];
     let eatingOutPercentage=[];
     let deliveredPercentage=[];
-    data.forEach(line=>{
+    let missingValue = '';
+    data.all_data.forEach(line=>{
         if (line.year==yearRange){
             y.push(`${line.description.replace("~","<br>")}<br><em>(${line["count"]})</em>`);
             groceries.push(line["groceries"]);
@@ -26,7 +27,12 @@ function plot(data,is2007){
             otherStoresPercentage.push(line["other_stores_percentage"]);
             eatingOutPercentage.push(line["eating_out_percentage"]);
             deliveredPercentage.push(line["delivered_percentage"]);
-        }
+        };
+    });
+    data.nulls.forEach(line=>{
+        if (line.year==yearRange && line.missing!=0){
+            missingValue = `Missing values: ${line['missing']}`;
+        };
     });
 
     var trace1 = {
@@ -90,10 +96,23 @@ function plot(data,is2007){
         barmode: 'stack',
         autosize:true,
         height:(window.innerHeight-40),
-        legend:{"orientation":"h"},
+        legend:{
+            orientation:'h'
+        },
         automargin:true,
         margin:{b:200,l:160,t:100,r:30,autoexpand:true},
-        title:`Average Monthly Spending on food in the US (${yearRange} ONLY)`};
+        title:`Average Monthly Spending on food in the US<br>${yearRange}`,
+        annotations: [ {
+            xref: 'paper',
+            yref: 'paper',
+            x: 0,
+            xanchor: 'left',
+            y: -0.5,
+            yanchor: 'top',
+            text: `${missingValue}`,
+            showarrow: false
+          }]
+    };
 
     Plotly.newPlot('plot', data, layout);
     if (isListening===false){
