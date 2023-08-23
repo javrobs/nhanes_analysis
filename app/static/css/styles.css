@@ -83,6 +83,10 @@ i{
     position:relative;
     bottom:30px;
     left:10px;
+    color:gray;
+    font-style: italic;
+    font-family: "Open Sans", verdana, arial, sans-serif;
+    font-size:smaller;
 }
 
 #title{
