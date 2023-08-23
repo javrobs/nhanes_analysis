@@ -14,6 +14,7 @@ function filter(){
     if(value==="default"){
         instructions.classList.remove("d-none");
         plotarea.classList.add("d-none");
+        missingValueDiv.innerHTML="";
     } else {
         instructions.classList.add("d-none");
         plotarea.classList.remove("d-none");
