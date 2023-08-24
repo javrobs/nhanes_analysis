@@ -29,7 +29,7 @@
                         </div>
                         <div class="col-12 p-0" id="filter-by">
                             <h3>Filter by:</h3>
-                            <select onchange="filter(this);" class="filter" id="first-filter">
+                            <select onchange="filter(this);" class="filter" id="filter-1">
                                 <option value="default">Select a filter...</option>
                                 {% for key, value in variables_d.items() %}
                                 <option value={{key}}>{{value}}</option>
@@ -48,6 +48,7 @@
                     </div>
                     <div id="plot"></div>
                     <div id="missingValuesNote"></div>
+                    <div id="error-message" class="d-none">No data</div>
                 </div>
             </div>  
         </div>
