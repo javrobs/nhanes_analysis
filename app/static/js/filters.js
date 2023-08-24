@@ -47,8 +47,8 @@ function filter(element){
 }
 
 function filterDeeper(data,column){
-    let selectedFilter=document.querySelector(`option[value=${column}]`).innerHTML;
-    filterDeeperDiv.innerHTML=`<h5 class="pt-3 pb-2 m-0">Filter deeper on <span class="highlight">${selectedFilter}</span>:</h5>`;
+    // let selectedFilter=filterElement.querySelector(`option[value=${column}]`).innerHTML;
+    // filterDeeperDiv.innerHTML+=`<h5 class="pt-3 pb-2 m-0">Filter deeper on <span class="highlight">${selectedFilter}</span>:</h5>`;
     let options=[];
     let newSelect=document.createElement("select");
     let defaultOption=document.createElement("option");
@@ -56,12 +56,12 @@ function filterDeeper(data,column){
     newSelect.appendChild(defaultOption);
     data.all_data.forEach(line=>{
         // console.log(options);
-        let value=line["description"];
-        value=value.replaceAll("~"," ");
-        if (options.includes(value)===false&&value!=="Don't know"&&value!=="Refused"){
-            options.push(value);
+        let text=line["description"];
+        text=text.replaceAll("~"," ");
+        if (options.includes(text)===false&&text!=="Don't know"&&text!=="Refused"){
+            options.push(text);
             let oneOption=document.createElement("option");
-            oneOption.innerHTML=value;
+            oneOption.innerHTML=text;
             oneOption.setAttribute("value",line["id"])
             newSelect.appendChild(oneOption);
         } 
@@ -81,6 +81,7 @@ function createFilter(event,column){
     });
     let newFilter=filterElement.cloneNode(true);
     newFilter.classList.remove("filter-past");
+    newFilter.removeAttribute("id");
     let optionToRemove=newFilter.querySelector(`[value=${column}]`);
     newFilter.removeChild(optionToRemove);
     filterDeeperDiv.appendChild(newFilter);
