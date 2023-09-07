@@ -16,6 +16,7 @@
     --accent: #1A1627;
     --back: #F2F8FA;
     --text: #00383D;
+    --highlight: #E5BB3E;
   }
 
 html,body{
@@ -63,7 +64,7 @@ i{
 }
 
 .highlight{
-    color:#E5BB3E;
+    color: var(--highlight);
 }
 
 .label{
@@ -114,4 +115,20 @@ table{
 td,th{
     border:1px solid black;
     padding:2px;
+}
+#filter-div-1{
+    background-color: var(--highlight);
+     /* rgba(79, 63, 131, 0.2); */
+}
+#filter-div-2{
+    background-color: rgba(59, 50, 88, 0.4);
+}
+#filter-div-3{
+    background-color: rgba(59, 50, 88, 0.6);
+}
+#filter-div-4{
+    background-color: rgba(59, 50, 88, 0.8);
+}
+#filter-div-5{
+    background-color: rgba(59, 50, 88, 1);
 }
