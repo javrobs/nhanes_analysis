@@ -38,6 +38,12 @@ function filter(element){
         missingValueDiv.innerHTML="";
         // filterDeeperDiv.innerHTML="";
         errorMessage.classList.add("d-none");
+        let currentCategory = document.querySelector(`#category-${filterCount}`);
+        if (currentCategory!==null){
+            currentCategory.remove();
+            let title = document.querySelector(`#title-on-${filterCount}`);
+            title.remove();
+        };
     } else {
         instructions.classList.add("d-none");
         plotarea.classList.remove("d-none");
@@ -112,7 +118,8 @@ function filterOn(data,column,counter){
 function filterDeeper(event,column,counter){
     let currentDiv = document.querySelector(`#filter-div-${counter}`)
     if (currentDiv!==null){
-        currentDiv.remove();
+        // currentDiv.remove();
+        killTree(counter-1);
     };
     console.log(event.target.value);
     let filterDeeperDiv = document.createElement("div");
@@ -143,10 +150,16 @@ function filterDeeper(event,column,counter){
 
 
 function killTree(numberOfFiltersToKeep){
+    console.log('killed a Tree!!', numberOfFiltersToKeep);
     let currentFilter=document.querySelector('.current-filter');
     let currentFilterCount=Number(currentFilter.id.split("-")[1]);
+    console.log(currentFilter, currentFilterCount);
     for (let i=numberOfFiltersToKeep+1;i<=currentFilterCount;i++){
         let divToDelete = document.querySelector(`#filter-div-${i}`);
+        console.log(i);
         divToDelete.remove();
     };
+    let killingFilter=document.querySelector(`#filter-${numberOfFiltersToKeep}`);
+    killingFilter.classList.add("current-filter");
+    killingFilter.classList.remove("filter-past");
 };
