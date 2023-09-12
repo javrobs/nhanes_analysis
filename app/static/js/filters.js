@@ -7,6 +7,8 @@ const year2017=document.querySelector("#second-year");
 // const filterDeeperDiv=document.querySelector("#filter-deeper");
 const errorMessage=document.querySelector("#error-message");
 const parentDiv = document.querySelector("#filter-by");
+const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
 // year2007.addEventListener("change",filter);
 // year2017.addEventListener("change",filter);
@@ -25,12 +27,20 @@ function filter(element){
             filtersDictionary[pastFilters[i].value]=categories[i].value;
         };
         killTree(filterCount);
+    } else if (currentFilter.value==='default'&&pastFilters.length>0&&element.tagName==='INPUT') {
+        let lastFilter=pastFilters[pastFilters.length-1];
+        value=lastFilter.value;
+        for (let i=0;i<pastFilters.length-1;i++){
+            filtersDictionary[pastFilters[i].value]=categories[i].value;
+        };
+        console.log(value, filtersDictionary);
     } else {
         value=currentFilter.value;
         filterCount=Number(currentFilter.id.split("-")[1]);
         for (let i=0;i<pastFilters.length;i++){
             filtersDictionary[pastFilters[i].value]=categories[i].value;
         };
+        console.log(value, filtersDictionary);
     };
     if(value==="default"){
         instructions.classList.remove("d-none");
@@ -60,7 +70,9 @@ function filter(element){
                 if(data.all_data.length!==0){
                     plot(data,year2007.checked);
                     errorMessage.classList.add("d-none");
-                    filterOn(data,value,filterCount);
+                    if (element.tagName==='SELECT'){
+                        filterOn(data,value,filterCount);
+                    };
                     // };                    
                 } else {
                     plotarea.classList.add("d-none");
@@ -131,11 +143,13 @@ function filterDeeper(event,column,counter){
         one.classList.add("filter-past");
         one.classList.remove("current-filter");
     });
-    let h6Title = document.createElement('h4');
-    h6Title.innerHTML="Filter deeper by:";
+    let title = document.createElement('div');
+    title.innerHTML="<h4 class='m-0'>Filter deeper by:</h4> <i class='bi bi-x-square-fill icon-close' onclick='iconKillTree(this);'></i>";
     // h6Title.classList.add("pt-3");
-    h6Title.classList.add("pb-2");
-    h6Title.classList.add("m-0");
+    title.classList.add("pb-2");
+    title.classList.add("align-items-baseline");
+    title.classList.add("d-flex");
+    title.classList.add("justify-content-between");
     let lastFilter=document.querySelector(`#filter-${counter-1}`);
     let newFilter=lastFilter.cloneNode(true);
     newFilter.classList.add("current-filter");
@@ -143,7 +157,7 @@ function filterDeeper(event,column,counter){
     newFilter.setAttribute("id",`filter-${counter}`);
     let optionToRemove=newFilter.querySelector(`[value=${column}]`);
     newFilter.removeChild(optionToRemove);
-    filterDeeperDiv.appendChild(h6Title);
+    filterDeeperDiv.appendChild(title);
     filterDeeperDiv.appendChild(newFilter);
     parentDiv.appendChild(filterDeeperDiv);
 };
@@ -163,3 +177,10 @@ function killTree(numberOfFiltersToKeep){
     killingFilter.classList.add("current-filter");
     killingFilter.classList.remove("filter-past");
 };
+
+function iconKillTree(element){
+    let iconParentDiv = element.parentElement.parentElement;
+    let numberIcon=iconParentDiv.id.split("-")[2];
+    console.log(numberIcon);
+    killTree(numberIcon-1);
+}

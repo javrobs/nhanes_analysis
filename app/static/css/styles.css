@@ -17,6 +17,7 @@
     --back: #F2F8FA;
     --text: #00383D;
     --highlight: #E5BB3E;
+    --icons: #D93662;
   }
 
 html,body{
@@ -49,8 +50,21 @@ select{
 }
 
 i{
-    height:12px;
-    width:12px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.icon-info:hover{
+    color: var(--color1);
+}
+
+.icon-close:hover{
+    color: var(--icons);
+}
+
+.custom-tooltip {
+    --bs-tooltip-bg: var(--color1);
+    --bs-tooltip-color: var(--text);
 }
 
 #labelsContainer{
@@ -112,22 +126,41 @@ table{
     background-color: var(--back);
     color:black;
 }
+
 td,th{
     border:1px solid black;
     padding:2px;
 }
+
 #filter-div-1{
     background-color: rgba(59, 50, 88, 0.2);
 }
+
 #filter-div-2{
     background-color: rgba(59, 50, 88, 0.4);
 }
+
 #filter-div-3{
     background-color: rgba(59, 50, 88, 0.6);
 }
+
 #filter-div-4{
     background-color: rgba(59, 50, 88, 0.8);
 }
+
 #filter-div-5{
     background-color: rgba(59, 50, 88, 1);
 }
+
+/* .on-hover-child{
+    display: none;
+    position: absolute;
+}
+
+.on-hover-parent{
+    position: relative;
+}
+
+.on-hover-parent:hover>.on-hover-child{
+    display: block;
+} */
