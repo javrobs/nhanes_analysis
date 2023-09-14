@@ -96,6 +96,26 @@ i{
 #plotContainer{
     padding:20px;
     background-color: var(--back);
+    z-index:5;
+}
+
+.ghost{
+    position:relative;
+    height:0px;
+    /* width:0px; */
+    overflow:visible;
+}
+
+#breadcrumb{
+    position:relative;
+    top:10px;
+    left:10px;
+    color:gray;
+    font-style: italic;
+    font-family: "Open Sans", verdana, arial, sans-serif;
+    font-size:smaller;
+    /* white-space: nowrap; */
+    z-index:8;
 }
 
 #missingValuesNote{
@@ -106,6 +126,8 @@ i{
     font-style: italic;
     font-family: "Open Sans", verdana, arial, sans-serif;
     font-size:smaller;
+    /* white-space: nowrap; */
+    z-index:8;
 }
 
 #title{
@@ -133,23 +155,7 @@ td,th{
 }
 
 #filter-div-1{
-    background-color: rgba(59, 50, 88, 0.2);
-}
-
-#filter-div-2{
-    background-color: rgba(59, 50, 88, 0.4);
-}
-
-#filter-div-3{
-    background-color: rgba(59, 50, 88, 0.6);
-}
-
-#filter-div-4{
-    background-color: rgba(59, 50, 88, 0.8);
-}
-
-#filter-div-5{
-    background-color: rgba(59, 50, 88, 1);
+    background-color: rgba(31, 90, 132, 1);
 }
 
 /* .on-hover-child{

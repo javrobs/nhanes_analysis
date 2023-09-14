@@ -37,7 +37,7 @@
                                     </div>
                                 </div>
                                 <select onchange="filter(this);" class="filter current-filter" id="filter-1">
-                                    <option value="default">Select a filter...</option>
+                                    <option value="default" disabled selected>Select a filter...</option>
                                     {% for key, value in variables_d.items() %}
                                     <option value={{key}}>{{value}}</option>
                                     {% endfor %}
@@ -51,8 +51,13 @@
                         <h2>Instructions</h2>
                         <p>Start by selecting a filter in the "Filter by" dropdown menu.</p>
                     </div>
+                    <div class="ghost">
+                        <div id="breadcrumb"></div>
+                    </div>
                     <div id="plot"></div>
-                    <div id="missingValuesNote"></div>
+                    <div class="ghost">
+                        <div id="missingValuesNote"></div>
+                    </div>
                     <div id="error-message" class="d-none">No data</div>
                 </div>
             </div>  

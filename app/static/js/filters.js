@@ -3,15 +3,11 @@ const instructions=document.querySelector("#instructions");
 const plotarea=document.querySelector("#plot");
 const year2007=document.querySelector("#first-year");
 const year2017=document.querySelector("#second-year");
-// const filterElement=document.querySelector("#filter-1");
-// const filterDeeperDiv=document.querySelector("#filter-deeper");
 const errorMessage=document.querySelector("#error-message");
 const parentDiv = document.querySelector("#filter-by");
 const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
 const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
-
-// year2007.addEventListener("change",filter);
-// year2017.addEventListener("change",filter);
+const breadcrumbDiv=document.querySelector("#breadcrumb");
 
 function filter(element){
     let value;
@@ -27,8 +23,9 @@ function filter(element){
             filtersDictionary[pastFilters[i].value]=categories[i].value;
         };
         killTree(filterCount);
-    } else if (currentFilter.value==='default'&&pastFilters.length>0&&element.tagName==='INPUT') {
+    } else if (currentFilter.value==='default'&&pastFilters.length>0&&element.tagName!=='SELECT') {
         let lastFilter=pastFilters[pastFilters.length-1];
+        filterCount=Number(lastFilter.id.split("-")[1]);
         value=lastFilter.value;
         for (let i=0;i<pastFilters.length-1;i++){
             filtersDictionary[pastFilters[i].value]=categories[i].value;
@@ -40,11 +37,12 @@ function filter(element){
         for (let i=0;i<pastFilters.length;i++){
             filtersDictionary[pastFilters[i].value]=categories[i].value;
         };
-        console.log(value, filtersDictionary);
+        // console.log(value, filtersDictionary);
     };
     if(value==="default"){
         instructions.classList.remove("d-none");
         plotarea.classList.add("d-none");
+        breadcrumbDiv.innerHTML="";
         missingValueDiv.innerHTML="";
         // filterDeeperDiv.innerHTML="";
         errorMessage.classList.add("d-none");
@@ -57,6 +55,7 @@ function filter(element){
     } else {
         instructions.classList.add("d-none");
         plotarea.classList.remove("d-none");
+        buildingBreadcrumb(filterCount);
         fetch(URL,{
             method: 'POST',
             mode :'cors',
@@ -79,12 +78,12 @@ function filter(element){
                     errorMessage.classList.remove("d-none");
                 };
             });
-    }
-}
+    };
+};
 
 function filterOn(data,column,counter){
     let currentCategory = document.querySelector(`#category-${counter}`);
-    console.log(currentCategory);
+    // console.log(currentCategory);
     if (currentCategory!==null){
         currentCategory.remove();
         let title = document.querySelector(`#title-on-${counter}`);
@@ -106,6 +105,9 @@ function filterOn(data,column,counter){
     let newSelect=document.createElement("select");
     let defaultOption=document.createElement("option");
     defaultOption.innerHTML="Select an option..";
+    defaultOption.value="default";
+    defaultOption.disabled=true;
+    defaultOption.selected=true;
     newSelect.appendChild(defaultOption);
     data.all_data.forEach(line=>{
         // console.log(options);
@@ -160,8 +162,8 @@ function filterDeeper(event,column,counter){
     filterDeeperDiv.appendChild(title);
     filterDeeperDiv.appendChild(newFilter);
     parentDiv.appendChild(filterDeeperDiv);
+    changeFilterBackground(counter);
 };
-
 
 function killTree(numberOfFiltersToKeep){
     console.log('killed a Tree!!', numberOfFiltersToKeep);
@@ -176,11 +178,39 @@ function killTree(numberOfFiltersToKeep){
     let killingFilter=document.querySelector(`#filter-${numberOfFiltersToKeep}`);
     killingFilter.classList.add("current-filter");
     killingFilter.classList.remove("filter-past");
+    buildingBreadcrumb(numberOfFiltersToKeep);
 };
 
 function iconKillTree(element){
     let iconParentDiv = element.parentElement.parentElement;
     let numberIcon=iconParentDiv.id.split("-")[2];
-    console.log(numberIcon);
+    console.log(element, iconParentDiv, numberIcon);
     killTree(numberIcon-1);
-}
+    let selectedFilter = document.querySelector(`#filter-${numberIcon-1}`)
+    filter(selectedFilter);
+};
+
+function buildingBreadcrumb(filterCount) {
+    let breadcrumbString="";
+    for(let i=1; i<=filterCount; i++){
+        let filter = document.querySelector(`#filter-${i}>option:checked`).innerHTML;
+        let category = document.querySelector(`#category-${i}>option:checked`);
+        breadcrumbString += filter;
+        if (category!==null&&category.value!=='default'){
+            category = category.innerHTML;
+            breadcrumbString += " - " + category + " > ";
+        }
+    };
+    breadcrumbDiv.innerHTML = breadcrumbString;
+};
+
+function changeFilterBackground(counter){
+    // let style = getComputedStyle(document.querySelector('#filter-div-1'));
+    // let backgroundColor = style.backgroundColor;
+    // console.log(backgroundColor);
+    // backgroundColor.split(",")
+    for (let i=1; i<=counter; i++){
+        let filterDiv = document.querySelector(`#filter-div-${i}`);
+        filterDiv.style = `background-color: rgba(31, 90, 132, ${i/counter});`
+    };
+};
