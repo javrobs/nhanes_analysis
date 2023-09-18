@@ -54,6 +54,10 @@ i{
     cursor: pointer;
 }
 
+#breadcrumb i{
+    cursor: default;
+}
+
 .icon-info:hover{
     color: var(--color1);
 }
@@ -107,15 +111,20 @@ i{
 }
 
 #breadcrumb{
-    position:relative;
-    top:10px;
-    left:10px;
+    /* position:relative; */
+    /* top:10px;
+    left:10px; */
     color:gray;
-    font-style: italic;
-    font-family: "Open Sans", verdana, arial, sans-serif;
+    /* font-style:italic; */
+    font-family:"Open Sans", verdana, arial, sans-serif;
     font-size:smaller;
-    /* white-space: nowrap; */
-    z-index:8;
+    /* background:rgb(31, 90, 132); */
+    flex-wrap: wrap;
+    /* z-index:8; */
+}
+
+.last-breadcrumb{
+    color:rgb(31, 90, 132);
 }
 
 #missingValuesNote{
@@ -123,8 +132,8 @@ i{
     bottom:30px;
     left:10px;
     color:gray;
-    font-style: italic;
-    font-family: "Open Sans", verdana, arial, sans-serif;
+    font-style:italic;
+    font-family:"Open Sans", verdana, arial, sans-serif;
     font-size:smaller;
     /* white-space: nowrap; */
     z-index:8;

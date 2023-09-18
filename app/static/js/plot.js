@@ -95,7 +95,7 @@ function plot(data,is2007){
     var layout = {
         barmode: 'stack',
         autosize:true,
-        height:(window.innerHeight-40),
+        height:(window.innerHeight-40-breadcrumbDiv.offsetHeight),
         legend:{
             orientation:'h'
         },
@@ -116,7 +116,7 @@ function startListener(){
     window.addEventListener("resize", ()=>{
     console.log("listening for resize");
     let plotWidth=document.querySelector("#plotContainer").offsetWidth-40;
-    let plotHeight=window.innerHeight-40;
+    let plotHeight=window.innerHeight-40-breadcrumbDiv.offsetHeight;
     Plotly.update('plot',{},{height:plotHeight,width:plotWidth});
     });
 };

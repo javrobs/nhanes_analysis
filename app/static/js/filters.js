@@ -5,8 +5,8 @@ const year2007=document.querySelector("#first-year");
 const year2017=document.querySelector("#second-year");
 const errorMessage=document.querySelector("#error-message");
 const parentDiv = document.querySelector("#filter-by");
-const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+var tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+var tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 const breadcrumbDiv=document.querySelector("#breadcrumb");
 
 function filter(element){
@@ -92,15 +92,28 @@ function filterOn(data,column,counter){
     };
     // console.log(currentCategory);
     let selectedFilter=document.querySelector(`option[value=${column}]`).innerHTML;
-    // filterDeeperDiv.innerHTML+=`<h5 class="pt-3 pb-2 m-0">Filter deeper on <span class="highlight">${selectedFilter}</span>:</h5>`;
-    let h6Title = document.createElement("h6");
-    h6Title.innerHTML=`On <span class="highlight">${selectedFilter}</span>:`
-    h6Title.classList.add("pt-1");
-    h6Title.classList.add("pb-1");
-    h6Title.classList.add("m-0");
-    h6Title.id = `title-on-${counter}`
     let filterOnDiv = document.querySelector(`#filter-div-${counter}`);
-    filterOnDiv.appendChild(h6Title);
+    if (counter===1) {
+        let categoryTitleDiv = document.createElement('div');
+        categoryTitleDiv.innerHTML = `<h6 class="py-1 m-0">On <span class="highlight">${selectedFilter}</span>:</h6>
+            <div class="on-hover-parent" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-placement="left" data-bs-html="true" data-bs-title="<b>Select a '${selectedFilter}' category.</b>">
+            <i class="bi bi-info-square-fill icon-info"></i>
+            </div>`;
+        categoryTitleDiv.classList.add("align-items-baseline");
+        categoryTitleDiv.classList.add("d-flex");
+        categoryTitleDiv.classList.add("justify-content-between");
+        categoryTitleDiv.id = `title-on-${counter}`
+        filterOnDiv.appendChild(categoryTitleDiv);
+        tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));        
+    } else {
+        let h6Title = document.createElement("h6");
+        h6Title.innerHTML=`On <span class="highlight">${selectedFilter}</span>:`
+        h6Title.classList.add("py-1");
+        h6Title.classList.add("m-0");
+        h6Title.id = `title-on-${counter}`
+        filterOnDiv.appendChild(h6Title);
+    }    
     let options=[];
     let newSelect=document.createElement("select");
     let defaultOption=document.createElement("option");
@@ -195,10 +208,10 @@ function buildingBreadcrumb(filterCount) {
     for(let i=1; i<=filterCount; i++){
         let filter = document.querySelector(`#filter-${i}>option:checked`).innerHTML;
         let category = document.querySelector(`#category-${i}>option:checked`);
-        breadcrumbString += filter;
+        breadcrumbString += (i==filterCount)? "<b class='last-breadcrumb'>" + filter + "</b>":"<b>" + filter + "</b>";
         if (category!==null&&category.value!=='default'){
             category = category.innerHTML;
-            breadcrumbString += " - " + category + " > ";
+            breadcrumbString += "&nbsp- " + category + '&nbsp <i class="bi bi-arrow-right"></i>&nbsp ';
         }
     };
     breadcrumbDiv.innerHTML = breadcrumbString;
