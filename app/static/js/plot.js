@@ -1,7 +1,10 @@
 var isListening=false;
-const missingValueDiv=document.querySelector("#missingValuesNote")
+const missingValueDiv=document.querySelector("#missingValuesNote");
+const legendDiv=document.querySelector('#legend');
 
 function plot(data,is2007){
+    legendDiv.classList.remove('d-none');
+    legendDiv.classList.add('d-flex');
     let yearRange=(is2007)?"2007-2008":"2017-2018";
     let y=[];
     let groceries=[];
@@ -95,16 +98,22 @@ function plot(data,is2007){
     var layout = {
         barmode: 'stack',
         autosize:true,
-        height:(window.innerHeight-40-breadcrumbDiv.offsetHeight),
-        legend:{
-            orientation:'h'
-        },
+        height:(window.innerHeight-40-breadcrumbDiv.offsetHeight-legendDiv.offsetHeight),
+        showlegend:false,
         automargin:true,
-        margin:{b:100,l:160,t:100,r:30,autoexpand:true},
-        title:`Average Monthly Spending on food in the US<br>${yearRange}`,
+        margin:{b:60,l:160,t:100,r:30,autoexpand:true},
+        title:`Average Monthly Spending<br>${yearRange}`,
+        xaxis: {
+            fixedrange:true
+        },
+        yaxis: {
+            fixedrange:true
+        }
     };
 
-    Plotly.newPlot('plot', data, layout);
+    Plotly.newPlot('plot', data, layout, {
+        displayModeBar:false
+    });
     if (isListening===false){
         startListener();
     };
@@ -116,7 +125,7 @@ function startListener(){
     window.addEventListener("resize", ()=>{
     console.log("listening for resize");
     let plotWidth=document.querySelector("#plotContainer").offsetWidth-40;
-    let plotHeight=window.innerHeight-40-breadcrumbDiv.offsetHeight;
+    let plotHeight=window.innerHeight-40-breadcrumbDiv.offsetHeight-legendDiv.offsetHeight;
     Plotly.update('plot',{},{height:plotHeight,width:plotWidth});
     });
 };

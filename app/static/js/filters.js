@@ -89,6 +89,9 @@ function filterOn(data,column,counter){
         let title = document.querySelector(`#title-on-${counter}`);
         title.remove();
         killTree(counter);
+        // let filterToRun = document.querySelector(`#filter-${counter}`);
+        // console.log(filterToRun);
+        // filter(filterToRun);
     };
     // console.log(currentCategory);
     let selectedFilter=document.querySelector(`option[value=${column}]`).innerHTML;
@@ -146,9 +149,17 @@ function filterDeeper(event,column,counter){
     let currentDiv = document.querySelector(`#filter-div-${counter}`)
     if (currentDiv!==null){
         // currentDiv.remove();
+        let valueToKeep = Number(event.target.value);
         killTree(counter-1);
+        let filterToRun = document.querySelector(`#filter-${counter-1}`);
+        // console.log(filterToRun);
+        // filter(filterToRun).then(() => {
+        //     let categoryToRun = document.querySelector(`#category-${counter-1}`);
+        //     categoryToRun.value = valueToKeep;
+        //     console.log("THIS IS THE VALUE TO KEEP:", valueToKeep);
+        // });
     };
-    console.log(event.target.value);
+    // console.log(event.target.value);
     let filterDeeperDiv = document.createElement("div");
     filterDeeperDiv.id = `filter-div-${counter}`;
     filterDeeperDiv.classList.add('px-3');
@@ -211,7 +222,7 @@ function buildingBreadcrumb(filterCount) {
         breadcrumbString += (i==filterCount)? "<b class='last-breadcrumb'>" + filter + "</b>":"<b>" + filter + "</b>";
         if (category!==null&&category.value!=='default'){
             category = category.innerHTML;
-            breadcrumbString += "&nbsp- " + category + '&nbsp <i class="bi bi-arrow-right"></i>&nbsp ';
+            breadcrumbString += "&nbsp- " + category + '&nbsp <i class="bi bi-arrow-right d-flex align-content-center"></i>&nbsp ';
         }
     };
     breadcrumbDiv.innerHTML = breadcrumbString;
