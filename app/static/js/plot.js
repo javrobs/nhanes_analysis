@@ -124,7 +124,7 @@ function startListener(){
     isListening=true;
     window.addEventListener("resize", ()=>{
     console.log("listening for resize");
-    let plotWidth=document.querySelector("#plotContainer").offsetWidth-40;
+    let plotWidth=document.querySelector("#plotAndInstructionsContainer").offsetWidth-40;
     let plotHeight=window.innerHeight-40-breadcrumbDiv.offsetHeight-legendDiv.offsetHeight;
     Plotly.update('plot',{},{height:plotHeight,width:plotWidth});
     });

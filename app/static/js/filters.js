@@ -8,6 +8,12 @@ const parentDiv = document.querySelector("#filter-by");
 var tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
 var tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 const breadcrumbDiv=document.querySelector("#breadcrumb");
+const mobileButtons=document.querySelectorAll(".mobile-button");
+const mobileTabs=document.querySelectorAll('.mobile-tab');
+
+mobileButtons.forEach(each => {
+    each.addEventListener('click', showTab);
+});
 
 function filter(element){
     let value;
@@ -237,4 +243,25 @@ function changeFilterBackground(counter){
         let filterDiv = document.querySelector(`#filter-div-${i}`);
         filterDiv.style = `background-color: rgba(31, 90, 132, ${i/counter});`
     };
+};
+
+function showTab(event){
+    let element = event.target;
+    let tabID = element.id.split('-button')[0];
+    mobileButtons.forEach(each => {
+        if (each===element){
+            each.classList.add("active");
+        } else {
+            each.classList.remove("active");
+        };
+    });
+    console.log(tabID);
+    let tab = document.querySelector(`#${tabID}`);
+    mobileTabs.forEach(each => {
+        if (each===tab){
+            each.classList.remove('mobile-tab-inactive');
+        } else {
+            each.classList.add('mobile-tab-inactive');
+        };
+    });
 };

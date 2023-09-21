@@ -22,17 +22,19 @@
     --icons: #D93662;
   }
 
-html,body{
-    height:100vh;
-    overflow:hidden;
-}
-
 select{
     width:100%;
 }
 
-#sideBar{
-    height:100vh;
+@media (min-width: 768px) {
+    #sideBar{
+        height:100vh;
+    }
+
+    html,body{
+        height:100vh;
+        overflow:hidden;
+    }
 }
 
 #header{
@@ -99,7 +101,7 @@ i{
     color:black;
 }
 
-#plotContainer{
+#plotAndInstructionsContainer{
     padding:20px;
     background-color: var(--back);
     z-index:5;
@@ -112,7 +114,8 @@ i{
 .mobile-button{
     height: 100%;
     width: 100%;
-    background-color: rgb(31, 90, 132);
+    background: rgb(31, 90, 132);
+    background: linear-gradient(90deg, rgba(35,85,126,1) 8%, rgba(39,113,165,1) 50%, rgba(35,85,126,1) 92%);
     color:white;
     border: 0;
     /* border: 1px solid #ADD8DE; */
@@ -140,6 +143,16 @@ i{
     box-shadow: none;
     background: rgb(39,113,165);
     background: radial-gradient(circle, rgba(39,113,165,1) 29%, rgba(41,125,169,1) 49%, rgba(43,140,175,1) 73%, rgba(45,152,179,1) 84%, rgba(48,174,186,1) 98%);
+}
+
+@media (max-width: 768px) {
+    .mobile-tab-inactive{
+        display: none !important;
+    }
+
+    /* .mobile-tab{
+        display: block !important;
+    } */
 }
 
 #legend{

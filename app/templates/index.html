@@ -20,14 +20,17 @@
                         </div>
                     </div>
                     <div class="d-md-none row">
-                        <div class="col-6 px-0">
-                            <button class="mobile-button active">Filters</button>
+                        <div class="col-4 px-0">
+                            <button class="mobile-button active" id="instructions-button"><i class="bi bi-info-circle-fill pe-1"></i>About</button>
                         </div>
-                        <div class="col-6 px-0">
-                            <button class="mobile-button">Graph</button>
+                        <div class="col-4 px-0">
+                            <button class="mobile-button" id="filter-button"><i class="bi bi-funnel-fill pe-1"></i>Filters</button>
+                        </div>
+                        <div class="col-4 px-0">
+                            <button class="mobile-button" id="plot-container-button"><i class="bi bi-bar-chart-fill pe-1"></i>Graph</button>
                         </div>
                     </div>
-                    <div class="d-flex flex-column row py-3 px-0" id="filter">
+                    <div class="d-flex flex-column row py-3 px-0 mobile-tab mobile-tab-inactive" id="filter">
                         <div class="col-12 px-3">
                             <h3>Years:</h3>
                         </div>
@@ -53,39 +56,41 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-9" id="plotContainer">
-                    <div class="" id="instructions">
+                <div class="col-12 col-md-9" id="plotAndInstructionsContainer">
+                    <div class="mobile-tab" id="instructions">
                         <h2>How to use this dashboard:</h2>
                         <p>Start by selecting a filter in the "Filter by" dropdown menu.</p>
                     </div>
-                    <div class="d-flex align-items-center py-1" id="breadcrumb"></div>
-                    <div id="plot"></div>
-                    <div class="ghost">
-                        <div id="missingValuesNote"></div>
+                    <div class="mobile-tab mobile-tab-inactive" id="plot-container">
+                        <div class="d-flex align-items-center py-1" id="breadcrumb"></div>
+                        <div id="plot"></div>
+                        <div class="ghost">
+                            <div id="missingValuesNote"></div>
+                        </div>
+                        <div class="d-none px-5 py-2 align-items-center justify-content-between" id="legend">
+                            <div class="d-flex align-items-center">
+                                <div class="color" id="color-1"></div>
+                                <div class="legend-text">Groceries</div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="color" id="color-2"></div>
+                                <div class="legend-text">Non-food</div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="color" id="color-3"></div>
+                                <div class="legend-text">Other stores</div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="color" id="color-4"></div>
+                                <div class="legend-text">Eating out</div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <div class="color" id="color-5"></div>
+                                <div class="legend-text">Delivery/Take-out</div>
+                            </div>
+                        </div>
+                        <div id="error-message" class="d-none py-2"><b>No data</b></div>
                     </div>
-                    <div class="d-none px-5 py-2 align-items-center justify-content-between" id="legend">
-                        <div class="d-flex align-items-center">
-                            <div class="color" id="color-1"></div>
-                            <div class="legend-text">Groceries</div>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <div class="color" id="color-2"></div>
-                            <div class="legend-text">Non-food</div>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <div class="color" id="color-3"></div>
-                            <div class="legend-text">Other stores</div>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <div class="color" id="color-4"></div>
-                            <div class="legend-text">Eating out</div>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <div class="color" id="color-5"></div>
-                            <div class="legend-text">Delivery/Take-out</div>
-                        </div>
-                    </div>
-                    <div id="error-message" class="d-none py-2"><b>No data</b></div>
                 </div>
             </div>  
         </div>
