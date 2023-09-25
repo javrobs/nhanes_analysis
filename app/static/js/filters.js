@@ -1,6 +1,7 @@
 const URL = '/queries';
 const instructions=document.querySelector("#instructions");
-const plotarea=document.querySelector("#plot");
+const plotContainer=document.querySelector('#plot-container');
+const plotArea=document.querySelector("#plot");
 const year2007=document.querySelector("#first-year");
 const year2017=document.querySelector("#second-year");
 const errorMessage=document.querySelector("#error-message");
@@ -8,8 +9,14 @@ const parentDiv = document.querySelector("#filter-by");
 var tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
 var tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 const breadcrumbDiv=document.querySelector("#breadcrumb");
+const desktopButtonDiv=document.querySelector('#desktop-button-div');
+const desktopButton=document.querySelector('#desktop-button');
 const mobileButtons=document.querySelectorAll(".mobile-button");
 const mobileTabs=document.querySelectorAll('.mobile-tab');
+var plotCreated=false;
+const missingValueDiv=document.querySelector("#missingValuesNote");
+const legendDiv=document.querySelector('#legend');
+
 
 mobileButtons.forEach(each => {
     each.addEventListener('click', showTab);
@@ -45,22 +52,22 @@ function filter(element){
         };
         // console.log(value, filtersDictionary);
     };
-    if(value==="default"){
-        instructions.classList.remove("d-none");
-        plotarea.classList.add("d-none");
-        breadcrumbDiv.innerHTML="";
-        missingValueDiv.innerHTML="";
-        // filterDeeperDiv.innerHTML="";
-        errorMessage.classList.add("d-none");
-        let currentCategory = document.querySelector(`#category-${filterCount}`);
-        if (currentCategory!==null){
-            currentCategory.remove();
-            let title = document.querySelector(`#title-on-${filterCount}`);
-            title.remove();
-        };
-    } else {
+    if(value!=="default"){
+    //     instructions.classList.remove("d-none");
+    //     plotArea.classList.add("d-none");
+    //     breadcrumbDiv.innerHTML="";
+    //     missingValueDiv.innerHTML="";
+    //     // filterDeeperDiv.innerHTML="";
+    //     errorMessage.classList.add("d-none");
+    //     let currentCategory = document.querySelector(`#category-${filterCount}`);
+    //     if (currentCategory!==null){
+    //         currentCategory.remove();
+    //         let title = document.querySelector(`#title-on-${filterCount}`);
+    //         title.remove();
+    //     };
+    // } else {
         instructions.classList.add("d-none");
-        plotarea.classList.remove("d-none");
+        plotContainer.classList.remove("d-none");
         buildingBreadcrumb(filterCount);
         fetch(URL,{
             method: 'POST',
@@ -71,19 +78,21 @@ function filter(element){
                 },
             body: JSON.stringify({column:value, previousFilters:filtersDictionary, selectedYear:year2007.checked})
             }).then(data=>data.json()).then(data => {
-                console.log(data);
-                if(data.all_data.length!==0){
-                    plot(data,year2007.checked);
-                    errorMessage.classList.add("d-none");
-                    if (element.tagName==='SELECT'){
-                        filterOn(data,value,filterCount);
-                    };
-                    // };                    
-                } else {
-                    plotarea.classList.add("d-none");
-                    errorMessage.classList.remove("d-none");
+            console.log(data);
+            if(data.all_data.length!==0){
+                plot(data,year2007.checked);
+                errorMessage.classList.add("d-none");
+                desktopButtonDiv.classList.remove("d-none");
+                if (element.tagName==='SELECT'){
+                    filterOn(data,value,filterCount);
                 };
-            });
+                // };
+                plotArea.classList.remove("d-none");
+            } else {
+                plotArea.classList.add("d-none");
+                errorMessage.classList.remove("d-none");
+            };
+        });
     };
 };
 
@@ -264,4 +273,29 @@ function showTab(event){
             each.classList.add('mobile-tab-inactive');
         };
     });
+    if (element.id==='plot-container-button') {
+        resizedWindow();
+        graphToggle();
+        // instructions.classList.add("d-none");
+        // plotContainer.classList.remove("d-none");
+    };
+    if (element.id==='instructions-button') {
+        // instructions.classList.remove("d-none");
+        // plotContainer.classList.add("d-none");
+        aboutToggle();
+    };
+};
+
+function aboutToggle(){
+    instructions.classList.remove("d-none");
+    plotContainer.classList.add("d-none");
+    desktopButton.innerHTML = '<i class="bi bi-bar-chart-fill pe-1"></i>Graph';
+    desktopButton.setAttribute('onclick', 'graphToggle();')
+};
+
+function graphToggle(){
+    instructions.classList.add("d-none");
+    plotContainer.classList.remove("d-none");
+    desktopButton.innerHTML = '<i class="bi bi-info-circle-fill pe-1"></i>About';
+    desktopButton.setAttribute('onclick', 'aboutToggle();')
 };

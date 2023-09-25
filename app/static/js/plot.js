@@ -1,11 +1,7 @@
-var isListening=false;
-const missingValueDiv=document.querySelector("#missingValuesNote");
-const legendDiv=document.querySelector('#legend');
-
-function plot(data,is2007){
+function plot(data,yearFlag){
     legendDiv.classList.remove('d-none');
     legendDiv.classList.add('d-flex');
-    let yearRange=(is2007)?"2007-2008":"2017-2018";
+    let yearRange=(yearFlag)?"2007-2008":"2017-2018";
     let y=[];
     let groceries=[];
     let nonFood=[];
@@ -97,8 +93,9 @@ function plot(data,is2007){
 
     var layout = {
         barmode: 'stack',
-        autosize:true,
+        // autosize:true,
         height:(window.innerHeight-40-breadcrumbDiv.offsetHeight-legendDiv.offsetHeight),
+        width: (plotArea.offsetWidth),
         showlegend:false,
         automargin:true,
         margin:{b:60,l:160,t:100,r:30,autoexpand:true},
@@ -114,18 +111,26 @@ function plot(data,is2007){
     Plotly.newPlot('plot', data, layout, {
         displayModeBar:false
     });
-    if (isListening===false){
+    if (plotCreated===false){
         startListener();
     };
 };
 
-
 function startListener(){
-    isListening=true;
+    plotCreated=true;
     window.addEventListener("resize", ()=>{
     console.log("listening for resize");
-    let plotWidth=document.querySelector("#plotAndInstructionsContainer").offsetWidth-40;
-    let plotHeight=window.innerHeight-40-breadcrumbDiv.offsetHeight-legendDiv.offsetHeight;
-    Plotly.update('plot',{},{height:plotHeight,width:plotWidth});
+    let doit;
+    clearTimeout(doit);
+    doit = setTimeout(resizedWindow, 100);
+    // let plotWidth=document.querySelector("#plotAndInstructionsContainer").offsetWidth-40;
+    // let plotHeight=window.innerHeight-40-breadcrumbDiv.offsetHeight-legendDiv.offsetHeight;
+    // Plotly.update('plot',{},{height:plotHeight,width:plotWidth});
     });
+};
+
+function resizedWindow(){
+    Plotly.purge('plot');
+    let lastFilter = document.querySelector('.current-filter');
+    filter(lastFilter);
 };
