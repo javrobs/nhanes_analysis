@@ -35,6 +35,10 @@ select{
         height:100vh;
         overflow:hidden;
     }
+
+    #mobile-no-graph-message{
+        display: none;
+    }
 }
 
 #header{
@@ -44,7 +48,7 @@ select{
     border-bottom: 5px solid var(--text);
 }
 
-#filter{
+#filter-container{
     background-color: var(--accent);
     color:var(--back);
     padding:20px;

@@ -21,19 +21,28 @@
                     </div>
                     <div class="d-md-none row">
                         <div class="col-4 px-0">
-                            <button class="all-buttons mobile-button" id="instructions-button"><i class="bi bi-info-circle-fill pe-1"></i>About</button>
+                            <button class="all-buttons mobile-button active" id="instructions-button">
+                                <i class="bi bi-info-circle-fill pe-1"></i>
+                                About
+                            </button>
                         </div>
                         <div class="col-4 px-0">
-                            <button class="all-buttons mobile-button active" id="filter-button"><i class="bi bi-funnel-fill pe-1"></i>Filters</button>
+                            <button class="all-buttons mobile-button" id="filter-button">
+                                <i class="bi bi-funnel-fill pe-1"></i>
+                                Filters
+                            </button>
                         </div>
                         <div class="col-4 px-0">
-                            <button class="all-buttons mobile-button" id="plot-container-button"><i class="bi bi-bar-chart-fill pe-1"></i>Graph</button>
+                            <button class="all-buttons mobile-button" id="plot-container-button">
+                                <i class="bi bi-bar-chart-fill pe-1"></i>
+                                Graph
+                            </button>
                         </div>
                     </div>
-                    <div class="d-flex flex-column row py-3 px-0 mobile-tab" id="filter">
+                    <div class="d-flex flex-column row py-3 px-0 mobile-tab mobile-tab-inactive" id="filter-container">
                         <div class="d-none d-md-grid">
                             <div class="d-none col-12 px-3 pb-2" id="desktop-button-div">
-                                <button class="all-buttons desktop-button" id="desktop-button" onclick="aboutToggle();"><i class="bi bi-info-circle-fill pe-1"></i>About</button>
+                                <button class="all-buttons desktop-button about-button" id="desktop-button" onclick="aboutToggle();"><i class="bi bi-info-circle-fill pe-1"></i>About</button>
                             </div>
                         </div>
                         <div class="col-12 px-3">
@@ -62,11 +71,14 @@
                     </div>
                 </div>
                 <div class="col-12 col-md-9" id="plotAndInstructionsContainer">
-                    <div class="mobile-tab mobile-tab-inactive" id="instructions">
+                    <div class="mobile-tab" id="instructions-container">
                         <h2>How to use this dashboard:</h2>
                         <p>Start by selecting a filter in the "Filter by" dropdown menu.</p>
                     </div>
                     <div class="mobile-tab mobile-tab-inactive d-none" id="plot-container">
+                        <div id="mobile-no-graph-message">
+                            <b>Please select a filter to see a graph.</b>
+                        </div>
                         <div class="d-flex align-items-center py-1" id="breadcrumb"></div>
                         <div id="plot"></div>
                         <div class="ghost">

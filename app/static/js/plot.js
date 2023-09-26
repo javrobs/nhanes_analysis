@@ -1,3 +1,9 @@
+const missingValueDiv=document.querySelector("#missingValuesNote");
+const legendDiv=document.querySelector('#legend');
+
+var plotCreated=false;
+
+
 function plot(data,yearFlag){
     legendDiv.classList.remove('d-none');
     legendDiv.classList.add('d-flex');
@@ -130,7 +136,11 @@ function startListener(){
 };
 
 function resizedWindow(){
-    Plotly.purge('plot');
     let lastFilter = document.querySelector('.current-filter');
+    if (lastFilter.value!=='default') {
+        Plotly.purge('plot');
+    };
+    if (desktopButton.classList.contains('about-button')) {
     filter(lastFilter);
+    };
 };
