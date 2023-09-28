@@ -1,26 +1,21 @@
 // Created constants for:
 // 1. The URL:
 const URL = '/queries';
-
 // 2. The desktop button:
 const desktopButtonDiv = document.querySelector('#desktop-button-div');
 const desktopButton = document.querySelector('#desktop-button');
-
 // 3. The mobile version:
 const mobileButtons = document.querySelectorAll('.mobile-button');
 const mobileTabs = document.querySelectorAll('.mobile-tab');
 const instructionsButton = document.querySelector('#instructions-button');
 const filterButton = document.querySelector('#filter-button');
 const plotContainerButton = document.querySelector('#plot-container-button');
-
 // 4. The instructions container:
 const instructionsContainer = document.querySelector('#instructions-container');
-
 // 5. The filters:
 const filterContainer = document.querySelector('#filter-container');
 const year2007 = document.querySelector('#first-year');
 const parentDiv = document.querySelector('#filter-by');
-
 // 6. The plot container:
 const plotContainer = document.querySelector('#plot-container');
 const mobileNoGraphMessage = document.querySelector('#mobile-no-graph-message');
@@ -32,26 +27,23 @@ const breadcrumbDiv = document.querySelector('#breadcrumb');
 var tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
 var tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
-
 // Created a listener so the mobile buttons execute the 'ShowTab' function when clicked:
 mobileButtons.forEach(each => {
     each.addEventListener('click', showTab);
 });
 
-
 // Created a function to call the server and get the data to correctly populate the filter dropdown and the graph:
 function filter(element) {
-
+    console.log("running filter function");
     // Defined the local variables needed:
     let value;
     let filterCount;
     let filtersDictionary = {};
-    
+    let caseOfFilter;
     // Created local variables that read the filters and categories:
     let currentFilter = document.querySelector(".current-filter");
     let pastFilters = document.querySelectorAll(".filter-past");
     let categories = document.querySelectorAll(".category");
-
     // Specified a condition that prepares the data that will be sent to the server:
     if (element.classList.contains('filter-past')) {
         value = element.value;
@@ -60,27 +52,32 @@ function filter(element) {
             filtersDictionary[pastFilters[i].value] = categories[i].value;
         };
         killTree(filterCount);
-    } else if (currentFilter.value === 'default' && pastFilters.length > 0 && element.tagName !== 'SELECT') {
+        caseOfFilter = 1;
+        console.log("if 1: element contains filter past");
+    } else if (currentFilter.value === 'default' && pastFilters.length > 0) {
+        // && element.tagName !== 'SELECT'
         let lastFilter = pastFilters[pastFilters.length - 1];
         filterCount = Number(lastFilter.id.split("-")[1]);
         value = lastFilter.value;
         for (let i = 0; i < pastFilters.length - 1; i++) {
             filtersDictionary[pastFilters[i].value] = categories[i].value;
         };
+        caseOfFilter = 2;
+        console.log("if 2: default & past-filterz > 0");
     } else {
         value = currentFilter.value;
         filterCount = Number(currentFilter.id.split("-")[1]);
         for (let i = 0; i < pastFilters.length; i++) {
             filtersDictionary[pastFilters[i].value] = categories[i].value;
         };
+        caseOfFilter = 3;
+        console.log("if 3: else");
     };
-
     // Created a condition that calls the server if the filter has a valid value:
     graphToggle(false);
     if (value !== "default") {
         // instructionsContainer.classList.add("d-none");
         // plotContainer.classList.remove("d-none");
-        buildingBreadcrumb(filterCount);
         fetch(URL, {
             method: 'POST',
             mode: 'cors',
@@ -95,8 +92,11 @@ function filter(element) {
                 plot(data, year2007.checked);
                 errorMessage.classList.add("d-none");
                 desktopButtonDiv.classList.remove("d-none");
-                if (element.tagName === 'SELECT') {
+                if (caseOfFilter!==2) {
                     filterOn(data, value, filterCount);
+                    buildingBreadcrumb(filterCount);
+                } else {
+                    buildingBreadcrumb(filterCount, false);
                 };
                 plotArea.classList.remove("d-none");
             } else {
@@ -104,6 +104,8 @@ function filter(element) {
                 errorMessage.classList.remove("d-none");
             };
         });
+    } else {
+        console.log("value is default, do nothing. enjoy");
     };
 };
 
@@ -228,7 +230,7 @@ function killTree(numberOfFiltersToKeep) {
     let killingFilter = document.querySelector(`#filter-${numberOfFiltersToKeep}`);
     killingFilter.classList.add("current-filter");
     killingFilter.classList.remove("filter-past");
-    buildingBreadcrumb(numberOfFiltersToKeep);
+    buildingBreadcrumb(numberOfFiltersToKeep, false);
 };
 
 function iconKillTree(element) {
@@ -240,17 +242,26 @@ function iconKillTree(element) {
     filter(selectedFilter);
 };
 
-function buildingBreadcrumb(filterCount) {
+// This function builds a breadcrumb based on a chosen number of filters and whether the last category needs to be in the breadcrumb:
+function buildingBreadcrumb(filterCount, showLastCategory=true) {
+    // Initialized a local string:
     let breadcrumbString = "";
+    // Ran a loop to read the values of filters and categories to string:
     for (let i = 1; i <= filterCount; i++) {
         let filter = document.querySelector(`#filter-${i}>option:checked`).innerHTML;
         let category = document.querySelector(`#category-${i}>option:checked`);
+        // Created a ternary to format only the last filter on the breadcrumb:
         breadcrumbString += (i == filterCount) ? "<b class='last-breadcrumb'>" + filter + "</b>" : "<b>" + filter + "</b>";
-        if (category !== null && category.value !== 'default') {
+        // Created a condition to add the categories to the breadcrumb if
+        // 1. the current category exists AND
+        // 2. the value is not 'default' AND
+        // 3. whenever 'showLastCategory' is true OR the last isn't being run:
+        if (category !== null && category.value !== 'default' && (showLastCategory || i<filterCount)) {
             category = category.innerHTML;
             breadcrumbString += "&nbsp- " + category + '&nbsp <i class="bi bi-arrow-right d-flex align-content-center"></i>&nbsp ';
-        }
+        };
     };
+    // Added the string to the breadcrumb div:
     breadcrumbDiv.innerHTML = breadcrumbString;
 };
 
@@ -287,7 +298,7 @@ function showTab(event) {
     // });
     switch (element.id) {
         case 'plot-container-button':
-            graphToggle();
+            graphToggle(false);
             resizedWindow();
             console.log('hello');
             break;
@@ -336,14 +347,14 @@ function aboutToggle() {
 
 };
 
-function graphToggle(avoidLoop=true) {
+function graphToggle(executeFilter=true) {
     instructionsContainer.classList.add("d-none");
     plotContainer.classList.remove("d-none");
     desktopButton.classList.remove('graph-button');
     desktopButton.classList.add('about-button');
     desktopButton.innerHTML = '<i class="bi bi-info-circle-fill pe-1"></i>About';
     desktopButton.setAttribute('onclick', 'aboutToggle();');
-    if (avoidLoop) {
+    if (executeFilter) {
         let lastFilter = document.querySelector('.current-filter');
         filter(lastFilter);
     }

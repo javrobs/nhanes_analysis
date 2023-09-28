@@ -137,10 +137,11 @@ function startListener(){
 
 function resizedWindow(){
     let lastFilter = document.querySelector('.current-filter');
-    if (lastFilter.value!=='default') {
+    // if (lastFilter.value!=='default') {
         Plotly.purge('plot');
-    };
+    // };
     if (desktopButton.classList.contains('about-button')) {
     filter(lastFilter);
+    console.log("running filter resizedWindow yay");
     };
 };
