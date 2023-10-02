@@ -1,4 +1,4 @@
-// Created constants for:
+// Constants for:
 // 1. The URL:
 const URL = '/queries';
 // 2. The desktop button:
@@ -23,61 +23,73 @@ const plotArea = document.querySelector('#plot');
 const errorMessage = document.querySelector('#error-message');
 const breadcrumbDiv = document.querySelector('#breadcrumb');
 
-// Created variables for the tooltips:
+// Variables for the tooltips:
 var tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
 var tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
-// Created a listener so the mobile buttons execute the 'ShowTab' function when clicked:
+// This listener enables the mobile buttons to change the tab in the mobile version:
 mobileButtons.forEach(each => {
     each.addEventListener('click', showTab);
 });
 
-// Created a function to call the server and get the data to correctly populate the filter dropdown and the graph:
+// This function calls the server and gets the data to correctly populate the filter dropdown and the graph:
 function filter(element) {
-    console.log("running filter function");
-    // Defined the local variables needed:
-    let value;
+    // Local variables declared:
+    let column; // This is the variable that defines what the graph shows.
     let filterCount;
     let filtersDictionary = {};
     let caseOfFilter;
-    // Created local variables that read the filters and categories:
-    let currentFilter = document.querySelector(".current-filter");
-    let pastFilters = document.querySelectorAll(".filter-past");
+    // Local variables assigned that reads the filters and categories:
+    let currentFilter = document.querySelector(".current-filter"); // This is the most recent filter.
+    let pastFilters = document.querySelectorAll(".filter-past"); // These are the filters created before 'currentFilter'.
     let categories = document.querySelectorAll(".category");
-    // Specified a condition that prepares the data that will be sent to the server:
+    // This condition prepares the data that will be sent to the server:
+    // 1. In this case, the 'filter' function was run by a past filter:
     if (element.classList.contains('filter-past')) {
-        value = element.value;
+        // 'column' equals the 'filter-past' that runs the function:
+        column = element.value;
+        // Gets the identifiable number from the id of 'filter-past':
         filterCount = Number(element.id.split("-")[1]);
+        // This loop gets a dictionary of all the pastFilters previous to the one that runs this function:
         for (let i = 0; i < filterCount - 1; i++) {
             filtersDictionary[pastFilters[i].value] = categories[i].value;
         };
+        // This 'killTree' function gets rid of all the filters and categories after the 'filter-past' that runs the 'filter' function:
         killTree(filterCount);
+        // Assigns the number of case that is run:
         caseOfFilter = 1;
-        console.log("if 1: element contains filter past");
+    // 2. In this case, the function was run by an element when the value of current is default and there are past filters:
     } else if (currentFilter.value === 'default' && pastFilters.length > 0) {
-        // && element.tagName !== 'SELECT'
+        // 'lastFilter' equals to the 'past-filter' right before 'current-filter':
         let lastFilter = pastFilters[pastFilters.length - 1];
+        // Gets the identifiable number from the id of 'lastFilter':
         filterCount = Number(lastFilter.id.split("-")[1]);
-        value = lastFilter.value;
+        // 'column' equals the value of 'lastFilter':
+        column = lastFilter.value;
+        // This loop gets a dictionary of all the pastFilters before the last 'past-filter':
         for (let i = 0; i < pastFilters.length - 1; i++) {
             filtersDictionary[pastFilters[i].value] = categories[i].value;
         };
+        // Assigns the number of case that is run:
         caseOfFilter = 2;
-        console.log("if 2: default & past-filterz > 0");
+    // 3. In this case, the function was run by the current filter:
     } else {
-        value = currentFilter.value;
+        // 'column' equals the value of 'currentFilter':
+        column = currentFilter.value;
+        // Gets the identifiable number from the id of 'currentFilter':
         filterCount = Number(currentFilter.id.split("-")[1]);
+        // This loop gets a dictionary of all the pastFilters:
         for (let i = 0; i < pastFilters.length; i++) {
             filtersDictionary[pastFilters[i].value] = categories[i].value;
         };
+        // Assigns the number of case that is run:
         caseOfFilter = 3;
-        console.log("if 3: else");
     };
-    // Created a condition that calls the server if the filter has a valid value:
+    // This function is run to inform the desktop version sidebar button and the mobile version 'Graph' button that the 'filter' function was run:
     graphToggle(false);
-    if (value !== "default") {
-        // instructionsContainer.classList.add("d-none");
-        // plotContainer.classList.remove("d-none");
+    // This condition calls the server if the filter has a valid column value:
+    if (column !== "default") {
+        // Calls the server to get the data:
         fetch(URL, {
             method: 'POST',
             mode: 'cors',
@@ -85,109 +97,132 @@ function filter(element) {
             {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ column: value, previousFilters: filtersDictionary, selectedYear: year2007.checked })
+            // Sends a stringified JSON with the column, the 'filtersDictionary' with the relevant 'past-filters', and the selected year:
+            body: JSON.stringify({
+                column: column,
+                previousFilters: filtersDictionary,
+                selectedYear: year2007.checked
+            })
+        // Waits until a server's response is received:
         }).then(data => data.json()).then(data => {
             mobileNoGraphMessage.classList.add("d-none");
-            if (data.all_data.length !== 0) {
+            // This condition defines what to show once the server's response is received:
+            // 1. In this case, the received data is plotted:
+            if (data.all_data.length > 0) {
                 plot(data, year2007.checked);
                 errorMessage.classList.add("d-none");
                 desktopButtonDiv.classList.remove("d-none");
+                // This condition defines what will appear in the breadcrumb and whether there will be further filtering available:
+                // 1. In this case, further filtering is enabled and the breadcrumb is created:
                 if (caseOfFilter!==2) {
-                    filterOn(data, value, filterCount);
+                    // This function adds a category under the filter that runs the 'filter' function:
+                    createCategory(data, column, filterCount);
+                    // This function creates the breadcrumb:
                     buildingBreadcrumb(filterCount);
+                // 2. In this case, only the breadcrumb is created:
                 } else {
+                    // This function creates the breadcrumb without the last category:
                     buildingBreadcrumb(filterCount, false);
                 };
                 plotArea.classList.remove("d-none");
+            // 2. In this case, the 'plotArea' is hidden and an error message is shown:
             } else {
                 plotArea.classList.add("d-none");
                 errorMessage.classList.remove("d-none");
             };
         });
-    } else {
-        console.log("value is default, do nothing. enjoy");
     };
 };
 
-function filterOn(data, column, counter) {
+// This function adds a new category:
+function createCategory(data, column, counter) {
+    // Local variable assigned to read the current category:
     let currentCategory = document.querySelector(`#category-${counter}`);
-    // console.log(currentCategory);
+    // This condition resets the current category:
     if (currentCategory !== null) {
+        // The current category is removed:
         currentCategory.remove();
+        // Local variable assigned to read the title of the current category:
         let title = document.querySelector(`#title-on-${counter}`);
+        // The title of the current category is removed:
         title.remove();
+        // This function gets rid of every filter and category that comes after the current category:
         killTree(counter);
-        // let filterToRun = document.querySelector(`#filter-${counter}`);
-        // console.log(filterToRun);
-        // filter(filterToRun);
     };
-    // console.log(currentCategory);
-    let selectedFilter = document.querySelector(`option[value=${column}]`).innerHTML;
-    let filterOnDiv = document.querySelector(`#filter-div-${counter}`);
+    // Local variable assigned to get the clean string equivalent to the selected column:
+    let cleanTextWithinOption = document.querySelector(`option[value=${column}]`).innerHTML;
+    // Local variable assigned to read the parent div of the counter:
+    let parentDiv = document.querySelector(`#filter-div-${counter}`);
+    // This condition defines the title elements that will appear when a category is created:
+    // 1. In this case, the first category is created, therefore, a title and an info button and its tooltip are added:
     if (counter === 1) {
         let categoryTitleDiv = document.createElement('div');
-        categoryTitleDiv.innerHTML = `<h6 class="py-1 m-0">On <span class="highlight">${selectedFilter}</span>:</h6>
-            <div class="on-hover-parent" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-placement="left" data-bs-html="true" data-bs-title="<b>Select a '${selectedFilter}' category.</b>">
+        categoryTitleDiv.innerHTML = `<h6 class="py-1 m-0">On <span class="highlight">${cleanTextWithinOption}</span>:</h6>
+            <div class="on-hover-parent" data-bs-toggle="tooltip" data-bs-custom-class="custom-tooltip" data-bs-placement="left" data-bs-html="true" data-bs-title="<b>Select a '${cleanTextWithinOption}' category.</b>">
             <i class="bi bi-info-square-fill icon-info"></i>
             </div>`;
         categoryTitleDiv.classList.add("align-items-baseline");
         categoryTitleDiv.classList.add("d-flex");
         categoryTitleDiv.classList.add("justify-content-between");
         categoryTitleDiv.id = `title-on-${counter}`
-        filterOnDiv.appendChild(categoryTitleDiv);
+        parentDiv.appendChild(categoryTitleDiv);
         tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+    // 2. In this case, only the title right above the category dropdown is added:
     } else {
         let h6Title = document.createElement("h6");
-        h6Title.innerHTML = `On <span class="highlight">${selectedFilter}</span>:`
+        h6Title.innerHTML = `On <span class="highlight">${cleanTextWithinOption}</span>:`
         h6Title.classList.add("py-1");
         h6Title.classList.add("m-0");
         h6Title.id = `title-on-${counter}`
-        filterOnDiv.appendChild(h6Title);
-    }
-    let options = [];
+        parentDiv.appendChild(h6Title);
+    };
+    // Local variables assigned to create new DOM elements:
     let newSelect = document.createElement("select");
     let defaultOption = document.createElement("option");
+    // Defines the default option text and its parameters:
     defaultOption.innerHTML = "Select an option..";
     defaultOption.value = "default";
     defaultOption.disabled = true;
     defaultOption.selected = true;
+    // Appends the 'defaultOption' element to the newly created select:
     newSelect.appendChild(defaultOption);
+    // For each line of the server's response, a new option for the category dropwdown is created:
     data.all_data.forEach(line => {
-        // console.log(options);
+        // Local variable assigned to read the category from the server's response:
         let text = line["description"];
+        // Replaces '~' with spaces:
         text = text.replaceAll("~", " ");
-        if (options.includes(text) === false && text !== "Don't know" && text !== "Refused") {
-            options.push(text);
+        // This condition adds all the options to the dropdown, except two:
+        if (text !== "Don't know" && text !== "Refused") {
+            // Local variable assigned to create a new 'option' element:
             let oneOption = document.createElement("option");
+            // Adds 'text' to the newly created option element:
             oneOption.innerHTML = text;
+            // Adds an id to each option's value:
             oneOption.setAttribute("value", line["id"])
+            // Appends the 'oneOption' element to 'newSelect':
             newSelect.appendChild(oneOption);
         };
     });
+    // Creates a 'class' and 'id' for the 'newSelect' element:
     newSelect.id = `category-${counter}`;
     newSelect.classList.add("category");
+    // This listener creates the next filter when the category is selected:
     newSelect.addEventListener("change", (event) => {
-        filterDeeper(event, column, counter + 1);
+        createNewFilter(event, column, counter + 1);
     });
-    filterOnDiv.appendChild(newSelect);
+    // Appends 'newSelect' to the 'parentDiv':
+    parentDiv.appendChild(newSelect);
 };
 
-function filterDeeper(event, column, counter) {
+function createNewFilter(event, column, counter) {
     let currentDiv = document.querySelector(`#filter-div-${counter}`)
     if (currentDiv !== null) {
-        // currentDiv.remove();
         let valueToKeep = Number(event.target.value);
         killTree(counter - 1);
         let filterToRun = document.querySelector(`#filter-${counter - 1}`);
-        // console.log(filterToRun);
-        // filter(filterToRun).then(() => {
-        //     let categoryToRun = document.querySelector(`#category-${counter-1}`);
-        //     categoryToRun.value = valueToKeep;
-        //     console.log("THIS IS THE VALUE TO KEEP:", valueToKeep);
-        // });
     };
-    // console.log(event.target.value);
     let filterDeeperDiv = document.createElement("div");
     filterDeeperDiv.id = `filter-div-${counter}`;
     filterDeeperDiv.classList.add('px-3');
@@ -199,7 +234,6 @@ function filterDeeper(event, column, counter) {
     });
     let title = document.createElement('div');
     title.innerHTML = "<h4 class='m-0'>Filter deeper by:</h4> <i class='bi bi-x-square-fill icon-close' onclick='iconKillTree(this);'></i>";
-    // h6Title.classList.add("pt-3");
     title.classList.add("pb-2");
     title.classList.add("align-items-baseline");
     title.classList.add("d-flex");
@@ -347,6 +381,7 @@ function aboutToggle() {
 
 };
 
+// This function changes the desktop version sidebar button to 'About' and activates the 'graph' button in the mobile version:
 function graphToggle(executeFilter=true) {
     instructionsContainer.classList.add("d-none");
     plotContainer.classList.remove("d-none");
