@@ -1,12 +1,8 @@
-const missingValueDiv=document.querySelector("#missingValuesNote");
-const legendDiv=document.querySelector('#legend');
-
 var plotCreated=false;
 
-
 function plot(data,yearFlag){
-    legendDiv.classList.remove('d-none');
-    legendDiv.classList.add('d-flex');
+    // legendDiv.classList.remove('d-none');
+    // legendDiv.classList.add('d-flex');
     let yearRange=(yearFlag)?"2007-2008":"2017-2018";
     let y=[];
     let groceries=[];
@@ -19,7 +15,9 @@ function plot(data,yearFlag){
     let otherStoresPercentage=[];
     let eatingOutPercentage=[];
     let deliveredPercentage=[];
-    data.all_data.forEach(line=>{
+    for (let i=data.all_data.length-1;i>=0;i--){
+        let line=data.all_data[i];
+        console.log(line);
         if (line.year==yearRange){
             y.push(`${line.description.replace("~","<br>")}<br><em>(${line["count"]})</em>`);
             groceries.push(line["groceries"]);
@@ -33,7 +31,7 @@ function plot(data,yearFlag){
             eatingOutPercentage.push(line["eating_out_percentage"]);
             deliveredPercentage.push(line["delivered_percentage"]);
         };
-    });
+    }
     data.nulls.forEach(line=>{
         if (line.year==yearRange){
             missingValueDiv.innerHTML=(line.missing!=0)?`Missing values: ${line['missing']}`:"";
@@ -96,15 +94,17 @@ function plot(data,yearFlag){
     };
 
     var data = [trace1,trace2,trace3,trace4,trace5];
-
+    console.log("plot width",plotArea.offsetWidth,plotArea.clientWidth);
+    
+    console.log("window height",plotArea.offsetWidth,plotArea.clientWidth);
     var layout = {
         barmode: 'stack',
         // autosize:true,
-        height:(window.innerHeight-40-breadcrumbDiv.offsetHeight-legendDiv.offsetHeight),
+        height:(window.innerHeight-20-breadcrumbDiv.offsetHeight-legendDiv.offsetHeight),
         width: (plotArea.offsetWidth),
         showlegend:false,
         automargin:true,
-        margin:{b:60,l:160,t:100,r:30,autoexpand:true},
+        margin:{b:60,l:160,t:100,r:30,autoexpand:false},
         title:`Average Monthly Spending<br>${yearRange}`,
         xaxis: {
             fixedrange:true
@@ -120,6 +120,7 @@ function plot(data,yearFlag){
     if (plotCreated===false){
         startListener();
     };
+    console.log("plot width",plotArea.offsetWidth,plotArea.clientWidth);
 };
 
 function startListener(){

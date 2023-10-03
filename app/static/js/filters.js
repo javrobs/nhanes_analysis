@@ -22,6 +22,8 @@ const mobileNoGraphMessage = document.querySelector('#mobile-no-graph-message');
 const plotArea = document.querySelector('#plot');
 const errorMessage = document.querySelector('#error-message');
 const breadcrumbDiv = document.querySelector('#breadcrumb');
+const missingValueDiv=document.querySelector("#missingValuesNote");
+const legendDiv=document.querySelector('#legend');
 
 // Variables for the tooltips:
 var tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
@@ -41,32 +43,32 @@ function filter(element) {
     let caseOfFilter;
     // Local variables assigned that reads the filters and categories:
     let currentFilter = document.querySelector(".current-filter"); // This is the most recent filter.
-    let pastFilters = document.querySelectorAll(".filter-past"); // These are the filters created before 'currentFilter'.
+    let pastFilters = document.querySelectorAll(".filter:not(.current-filter)"); // These are the filters created before 'currentFilter'.
     let categories = document.querySelectorAll(".category");
     // This condition prepares the data that will be sent to the server:
     // 1. In this case, the 'filter' function was run by a past filter:
-    if (element.classList.contains('filter-past')) {
-        // 'column' equals the 'filter-past' that runs the function:
+    if (element.classList.contains("filter")&&(element.classList.contains("current-filter")===false)) {
+        // 'column' gets the value from the filter that runs the function:
         column = element.value;
-        // Gets the identifiable number from the id of 'filter-past':
+        // Gets the identifiable number from the id of the filter:
         filterCount = Number(element.id.split("-")[1]);
-        // This loop gets a dictionary of all the pastFilters previous to the one that runs this function:
+        // This loop gets a dictionary of all the filters previous to this one:
         for (let i = 0; i < filterCount - 1; i++) {
             filtersDictionary[pastFilters[i].value] = categories[i].value;
         };
-        // This 'killTree' function gets rid of all the filters and categories after the 'filter-past' that runs the 'filter' function:
+        // This 'killTree' function gets rid of all the filters and categories after the filter:
         killTree(filterCount);
         // Assigns the number of case that is run:
         caseOfFilter = 1;
-    // 2. In this case, the function was run by an element when the value of current is default and there are past filters:
+    // 2. In this case, the function was run by an element when the value of current is default and there are filters selected:
     } else if (currentFilter.value === 'default' && pastFilters.length > 0) {
-        // 'lastFilter' equals to the 'past-filter' right before 'current-filter':
+        // 'lastFilter' equals to the filter right before 'current-filter':
         let lastFilter = pastFilters[pastFilters.length - 1];
         // Gets the identifiable number from the id of 'lastFilter':
         filterCount = Number(lastFilter.id.split("-")[1]);
         // 'column' equals the value of 'lastFilter':
         column = lastFilter.value;
-        // This loop gets a dictionary of all the pastFilters before the last 'past-filter':
+        // This loop gets a dictionary of all the pastFilters before 'lastFilter':
         for (let i = 0; i < pastFilters.length - 1; i++) {
             filtersDictionary[pastFilters[i].value] = categories[i].value;
         };
@@ -85,6 +87,11 @@ function filter(element) {
         // Assigns the number of case that is run:
         caseOfFilter = 3;
     };
+    console.log({
+        column: column,
+        previousFilters: filtersDictionary,
+        selectedYear: year2007.checked
+    })
     // This function is run to inform the desktop version sidebar button and the mobile version 'Graph' button that the 'filter' function was run:
     graphToggle(false);
     // This condition calls the server if the filter has a valid column value:
@@ -97,7 +104,7 @@ function filter(element) {
             {
                 "Content-Type": "application/json"
             },
-            // Sends a stringified JSON with the column, the 'filtersDictionary' with the relevant 'past-filters', and the selected year:
+            // Sends a stringified JSON with the column, the 'filtersDictionary' with the relevant past filters and categories, and the selected year:
             body: JSON.stringify({
                 column: column,
                 previousFilters: filtersDictionary,
@@ -109,8 +116,6 @@ function filter(element) {
             // This condition defines what to show once the server's response is received:
             // 1. In this case, the received data is plotted:
             if (data.all_data.length > 0) {
-                plot(data, year2007.checked);
-                errorMessage.classList.add("d-none");
                 desktopButtonDiv.classList.remove("d-none");
                 // This condition defines what will appear in the breadcrumb and whether there will be further filtering available:
                 // 1. In this case, further filtering is enabled and the breadcrumb is created:
@@ -124,11 +129,23 @@ function filter(element) {
                     // This function creates the breadcrumb without the last category:
                     buildingBreadcrumb(filterCount, false);
                 };
+                
+                breadcrumbDiv.classList.remove("d-none");
+                missingValueDiv.classList.remove("d-none");
+                legendDiv.classList.remove("d-none");
+                legendDiv.classList.add("d-flex");
                 plotArea.classList.remove("d-none");
+                errorMessage.classList.add("d-none");
+                plot(data, year2007.checked);
             // 2. In this case, the 'plotArea' is hidden and an error message is shown:
             } else {
                 plotArea.classList.add("d-none");
+                breadcrumbDiv.classList.add("d-none");
+                missingValueDiv.classList.add("d-none");
+                legendDiv.classList.add("d-none");
+                legendDiv.classList.remove("d-flex");
                 errorMessage.classList.remove("d-none");
+                killCategory(filterCount);
             };
         });
     };
@@ -136,19 +153,8 @@ function filter(element) {
 
 // This function adds a new category:
 function createCategory(data, column, counter) {
-    // Local variable assigned to read the current category:
-    let currentCategory = document.querySelector(`#category-${counter}`);
-    // This condition resets the current category:
-    if (currentCategory !== null) {
-        // The current category is removed:
-        currentCategory.remove();
-        // Local variable assigned to read the title of the current category:
-        let title = document.querySelector(`#title-on-${counter}`);
-        // The title of the current category is removed:
-        title.remove();
-        // This function gets rid of every filter and category that comes after the current category:
-        killTree(counter);
-    };
+    // Check if a category already exists and delete it with "killCategory" function:
+    killCategory(counter);
     // Local variable assigned to get the clean string equivalent to the selected column:
     let cleanTextWithinOption = document.querySelector(`option[value=${column}]`).innerHTML;
     // Local variable assigned to read the parent div of the counter:
@@ -216,38 +222,62 @@ function createCategory(data, column, counter) {
     parentDiv.appendChild(newSelect);
 };
 
+
+//This function checks if there is an existing category and deletes it:
+function killCategory(counter){
+    // Look up category in document
+    let category = document.querySelector(`#category-${counter}`);
+    // If it exists remove it, as well as the title and all filter divs after it:
+    if (category!==null){
+        // Category is removed:
+        category.remove();
+        // Local variable assigned to read the title of the current category:
+        let title = document.querySelector(`#title-on-${counter}`);
+        // The title of the current category is removed:
+        title.remove();
+        // Any filter div after the category is removed:
+        killTree(counter);
+    }
+};
+
+// This function adds a new div and populates it with a new filter:
 function createNewFilter(event, column, counter) {
+    // Look up if there is a div already created in the document:
     let currentDiv = document.querySelector(`#filter-div-${counter}`)
-    if (currentDiv !== null) {
-        let valueToKeep = Number(event.target.value);
-        killTree(counter - 1);
-        let filterToRun = document.querySelector(`#filter-${counter - 1}`);
-    };
-    let filterDeeperDiv = document.createElement("div");
-    filterDeeperDiv.id = `filter-div-${counter}`;
-    filterDeeperDiv.classList.add('px-3');
-    filterDeeperDiv.classList.add('py-3');
+    // If there is, run kill tree function to delete the div and filter:
+    if (currentDiv !== null) killTree(counter - 1);
+    // Create a new div to contain the new filter and set up classes and id:
+    let newFilterDiv = document.createElement("div");
+    newFilterDiv.id = `filter-div-${counter}`;
+    newFilterDiv.classList.add('px-3');
+    newFilterDiv.classList.add('py-3');
+    // Search the document for any filters and remove the current-filter class from all:
     let allFilters = document.querySelectorAll(".filter");
     allFilters.forEach(one => {
-        one.classList.add("filter-past");
+        // one.classList.add("filter-past");
         one.classList.remove("current-filter");
     });
+    // Create a div element for the title that will go above the filter:
     let title = document.createElement('div');
+    // The inner HTML of this div contains the title and an icon button to delete the filter and everything after it through the "iconKillTree" function:
     title.innerHTML = "<h4 class='m-0'>Filter deeper by:</h4> <i class='bi bi-x-square-fill icon-close' onclick='iconKillTree(this);'></i>";
+    // Enable flexbox behavior and specify format by classes:
     title.classList.add("pb-2");
     title.classList.add("align-items-baseline");
     title.classList.add("d-flex");
     title.classList.add("justify-content-between");
-    let lastFilter = document.querySelector(`#filter-${counter - 1}`);
-    let newFilter = lastFilter.cloneNode(true);
+    // Find the latest filter and clone it to use it as the new element:
+    let latestFilter = document.querySelector(`#filter-${counter - 1}`);
+    let newFilter = latestFilter.cloneNode(true);
+    // Set up the created filter as "current-filter" 
     newFilter.classList.add("current-filter");
-    newFilter.classList.remove("filter-past");
+    // newFilter.classList.remove("filter-past");
     newFilter.setAttribute("id", `filter-${counter}`);
     let optionToRemove = newFilter.querySelector(`[value=${column}]`);
     newFilter.removeChild(optionToRemove);
-    filterDeeperDiv.appendChild(title);
-    filterDeeperDiv.appendChild(newFilter);
-    parentDiv.appendChild(filterDeeperDiv);
+    newFilterDiv.appendChild(title);
+    newFilterDiv.appendChild(newFilter);
+    parentDiv.appendChild(newFilterDiv);
     changeFilterBackground(counter);
 };
 
@@ -263,7 +293,7 @@ function killTree(numberOfFiltersToKeep) {
     };
     let killingFilter = document.querySelector(`#filter-${numberOfFiltersToKeep}`);
     killingFilter.classList.add("current-filter");
-    killingFilter.classList.remove("filter-past");
+    // killingFilter.classList.remove("filter-past");
     buildingBreadcrumb(numberOfFiltersToKeep, false);
 };
 
@@ -390,8 +420,8 @@ function graphToggle(executeFilter=true) {
     desktopButton.innerHTML = '<i class="bi bi-info-circle-fill pe-1"></i>About';
     desktopButton.setAttribute('onclick', 'aboutToggle();');
     if (executeFilter) {
-        let lastFilter = document.querySelector('.current-filter');
-        filter(lastFilter);
+        let currentFilter = document.querySelector('.current-filter');
+        filter(currentFilter);
     }
     let button = document.querySelector('#plot-container-button');
     mobileButtons.forEach(each => {
