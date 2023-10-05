@@ -61,19 +61,28 @@ function filter(element) {
         // Assigns the number of case that is run:
         caseOfFilter = 1;
     // 2. In this case, the function was run by an element when the value of current is default and there are filters selected:
-    } else if (currentFilter.value === 'default' && pastFilters.length > 0) {
-        // 'lastFilter' equals to the filter right before 'current-filter':
-        let lastFilter = pastFilters[pastFilters.length - 1];
-        // Gets the identifiable number from the id of 'lastFilter':
-        filterCount = Number(lastFilter.id.split("-")[1]);
-        // 'column' equals the value of 'lastFilter':
-        column = lastFilter.value;
-        // This loop gets a dictionary of all the pastFilters before 'lastFilter':
-        for (let i = 0; i < pastFilters.length - 1; i++) {
-            filtersDictionary[pastFilters[i].value] = categories[i].value;
+    } else if (currentFilter.value === 'default') {
+        // This condition runs when the function is triggered by any element, which is not a filter:
+        if (pastFilters.length > 0) {
+            // 'lastFilter' equals to the filter right before 'current-filter':
+            let lastFilter = pastFilters[pastFilters.length - 1];
+            // Gets the identifiable number from the id of 'lastFilter':
+            filterCount = Number(lastFilter.id.split("-")[1]);
+            // 'column' equals the value of 'lastFilter':
+            column = lastFilter.value;
+            // This loop gets a dictionary of all the pastFilters before 'lastFilter':
+            for (let i = 0; i < pastFilters.length - 1; i++) {
+                filtersDictionary[pastFilters[i].value] = categories[i].value;
+            };
+            // Assigns the number of case that is run:
+            caseOfFilter = 2;  
+        // In this case, the filter equals 'default' and there are no selected filters:
+        } else {
+            // 'column' equals the value of 'currentFilter':
+            column = currentFilter.value;
+            // Assigns the number of case that is run:
+            caseOfFilter = 0;
         };
-        // Assigns the number of case that is run:
-        caseOfFilter = 2;
     // 3. In this case, the function was run by the current filter:
     } else {
         // 'column' equals the value of 'currentFilter':
@@ -87,13 +96,10 @@ function filter(element) {
         // Assigns the number of case that is run:
         caseOfFilter = 3;
     };
-    console.log({
-        column: column,
-        previousFilters: filtersDictionary,
-        selectedYear: year2007.checked
-    })
     // This function is run to inform the desktop version sidebar button and the mobile version 'Graph' button that the 'filter' function was run:
-    graphToggle(false);
+    if (caseOfFilter!==0) {
+        graphToggle(false);
+    };
     // This condition calls the server if the filter has a valid column value:
     if (column !== "default") {
         // Calls the server to get the data:
@@ -223,7 +229,7 @@ function createCategory(data, column, counter) {
 };
 
 
-//This function checks if there is an existing category and deletes it:
+// This function checks if there is an existing category and deletes it:
 function killCategory(counter){
     // Look up category in document
     let category = document.querySelector(`#category-${counter}`);
@@ -251,6 +257,7 @@ function createNewFilter(event, column, counter) {
     newFilterDiv.id = `filter-div-${counter}`;
     newFilterDiv.classList.add('px-3');
     newFilterDiv.classList.add('py-3');
+    newFilterDiv.classList.add('filter-div');
     // Search the document for any filters and remove the current-filter class from all:
     let allFilters = document.querySelectorAll(".filter");
     allFilters.forEach(one => {
@@ -273,35 +280,45 @@ function createNewFilter(event, column, counter) {
     newFilter.classList.add("current-filter");
     // newFilter.classList.remove("filter-past");
     newFilter.setAttribute("id", `filter-${counter}`);
+    // Assigns variable to remove the column that has already been selected:
     let optionToRemove = newFilter.querySelector(`[value=${column}]`);
     newFilter.removeChild(optionToRemove);
+    // Adds the title and new filter to the new div:
     newFilterDiv.appendChild(title);
     newFilterDiv.appendChild(newFilter);
+    // Adds the new div to the parent div:
     parentDiv.appendChild(newFilterDiv);
+    // Updates the background format to a new shade of blue:
     changeFilterBackground(counter);
 };
 
+// This function kills all the 'filter-div's after the 'numberOfFiltersToKeep':
 function killTree(numberOfFiltersToKeep) {
-    console.log('killed a Tree!!', numberOfFiltersToKeep);
+    // Saves the current filter in a variable:
     let currentFilter = document.querySelector('.current-filter');
+    // Gets the current number of filters:
     let currentFilterCount = Number(currentFilter.id.split("-")[1]);
-    console.log(currentFilter, currentFilterCount);
+    // Removes all the divs that are no longer needed:
     for (let i = numberOfFiltersToKeep + 1; i <= currentFilterCount; i++) {
         let divToDelete = document.querySelector(`#filter-div-${i}`);
-        console.log(i);
         divToDelete.remove();
     };
+    // Adds the 'current-filter' class to the filter that runs this function:
     let killingFilter = document.querySelector(`#filter-${numberOfFiltersToKeep}`);
     killingFilter.classList.add("current-filter");
-    // killingFilter.classList.remove("filter-past");
+    // Rebuilds the breadcrumb:
     buildingBreadcrumb(numberOfFiltersToKeep, false);
 };
 
+// This function gets rid of the icon's div and all the filter divs that follow:
 function iconKillTree(element) {
+    // Assigns the filter div (parent), where the icon is, to a variable:
     let iconParentDiv = element.parentElement.parentElement;
+    // Gets the identifiable number of the filter div:
     let numberIcon = iconParentDiv.id.split("-")[2];
-    console.log(element, iconParentDiv, numberIcon);
+    // Removes all the filter divs from the parent div of the icon:
     killTree(numberIcon - 1);
+    // Updates the graph using the filter before the filter divs that are removed:
     let selectedFilter = document.querySelector(`#filter-${numberIcon - 1}`)
     filter(selectedFilter);
 };
@@ -336,7 +353,7 @@ function changeFilterBackground(counter) {
     // backgroundColor.split(",")
     for (let i = 1; i <= counter; i++) {
         let filterDiv = document.querySelector(`#filter-div-${i}`);
-        filterDiv.style = `background-color: rgba(31, 90, 132, ${i / counter});`
+        filterDiv.style = `background-color: rgba(31, 90, 132, ${i / counter});`;
     };
 };
 

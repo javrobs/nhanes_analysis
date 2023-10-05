@@ -45,7 +45,7 @@ src: url("../fonts/Trirong-Black.ttf");
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .mobile-tab-inactive{
         display: none !important;
     }
@@ -100,6 +100,7 @@ i{
 
 #breadcrumb i{
     cursor: default;
+    align-self: center;
 }
 
 .icon-info:hover{
@@ -298,6 +299,14 @@ td,th{
 
 #filter-div-1{
     background-color: rgba(31, 90, 132, 1);
+}
+
+.filter-div{
+    box-shadow: inset 0px -3px 10px -6px #000000aa;
+}
+
+.filter-div:last-of-type{
+    box-shadow: none;
 }
 
 .grow{
