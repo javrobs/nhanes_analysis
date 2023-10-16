@@ -346,101 +346,76 @@ function buildingBreadcrumb(filterCount, showLastCategory=true) {
     breadcrumbDiv.innerHTML = breadcrumbString;
 };
 
+// This function changes the background of the sidebar div where the filters are:
 function changeFilterBackground(counter) {
-    // let style = getComputedStyle(document.querySelector('#filter-div-1'));
-    // let backgroundColor = style.backgroundColor;
-    // console.log(backgroundColor);
-    // backgroundColor.split(",")
+    // Identifies how many filter divs there are and modifies the opacity of the background color:
     for (let i = 1; i <= counter; i++) {
         let filterDiv = document.querySelector(`#filter-div-${i}`);
         filterDiv.style = `background-color: rgba(31, 90, 132, ${i / counter});`;
     };
 };
 
+// This function determines what tab to show in the mobile version:
 function showTab(event) {
+    // Defines a variable to know what tab button (or icon) is being clicked:
     let element = (event.target.tagName==='I')?event.target.parentElement:event.target;
-    console.log(element);
-    // let tabID = element.id.split('-button')[0];
-    // mobileButtons.forEach(each => {
-    //     if (each===element){
-    //         each.classList.add("active");
-    //     } else {
-    //         each.classList.remove("active");
-    //     };
-    // });
-    // console.log(tabID);
-    // let tab = document.querySelector(`#${tabID}`);
-    // mobileTabs.forEach(each => {
-    //     if (each===tab){
-    //         each.classList.remove('mobile-tab-inactive');
-    //     } else {
-    //         each.classList.add('mobile-tab-inactive');
-    //     };
-    // });
+    // Defines what to do for each tab:
     switch (element.id) {
+        // The 'Graph' button or icon is clicked:
         case 'plot-container-button':
+            // Matches the desktop button to the mobile version tab button:
             graphToggle(false);
+            // Recalculates the size of the graph:
             resizedWindow();
-            console.log('hello');
             break;
+        // The 'About' button or icon is clicked:
         case 'instructions-button':
+            // Matches the desktop button to the mobile version tab button:
             aboutToggle();
             break;
+        // The 'Filters' button or icon is clicked:
         case 'filter-button':
-            mobileButtons.forEach(each => {
-                if (each === filterButton) {
-                    each.classList.add("active");
-                } else {
-                    each.classList.remove("active");
-                };
-            });
-            mobileTabs.forEach(each => {
-                if (each === filterContainer) {
-                    each.classList.remove('mobile-tab-inactive');
-                } else {
-                    each.classList.add('mobile-tab-inactive');
-                };
-            });
+            // Actives the 'Filters' button and tab:
+            updateButtons(filterContainer, filterButton);
     };
 };
 
+// Once the 'About' desktop button is clicked, this function shows the 'About' section and changes the button to 'Graph':
 function aboutToggle() {
+    // Shows the instructions and hides the plot container:
     instructionsContainer.classList.remove("d-none");
     plotContainer.classList.add("d-none");
+    // Changes the 'About' button's content and 'onclick' function to the 'Graph' button's:
     desktopButton.classList.add('graph-button');
     desktopButton.classList.remove('about-button');
     desktopButton.innerHTML = '<i class="bi bi-bar-chart-fill pe-1"></i>Graph';
     desktopButton.setAttribute('onclick', 'graphToggle();');
-    mobileButtons.forEach(each => {
-        if (each === instructionsButton) {
-            each.classList.add("active");
-        } else {
-            each.classList.remove("active");
-        };
-    });
-    mobileTabs.forEach(each => {
-        if (each === instructionsContainer) {
-            each.classList.remove('mobile-tab-inactive');
-        } else {
-            each.classList.add('mobile-tab-inactive');
-        };
-    });
-
+    // Actives the 'About' button and tab:
+    updateButtons(instructionsContainer, instructionsButton);
 };
 
-// This function changes the desktop version sidebar button to 'About' and activates the 'graph' button in the mobile version:
+// Once the 'Graph' desktop button is clicked, this function shows the 'Graph' section and changes the button to 'About':
 function graphToggle(executeFilter=true) {
+    // Shows the plot and hides the instructions container:
     instructionsContainer.classList.add("d-none");
     plotContainer.classList.remove("d-none");
+    // Changes the 'Graph' button's content and 'onclick' function to the 'About' button's:
     desktopButton.classList.remove('graph-button');
     desktopButton.classList.add('about-button');
     desktopButton.innerHTML = '<i class="bi bi-info-circle-fill pe-1"></i>About';
     desktopButton.setAttribute('onclick', 'aboutToggle();');
+    // This condition stops the 'filter' function to be run indefinitely, unless 'executeFilter' is true:
     if (executeFilter) {
         let currentFilter = document.querySelector('.current-filter');
         filter(currentFilter);
-    }
-    let button = document.querySelector('#plot-container-button');
+    };
+    // Actives the 'Graph' button and tab:
+    updateButtons(plotContainer, plotContainerButton);
+};
+
+// This function updates the containers and buttons in the mobile version:
+function updateButtons(container, button) {
+    // Activates the button that is clicked:
     mobileButtons.forEach(each => {
         if (each === button) {
             each.classList.add("active");
@@ -448,8 +423,9 @@ function graphToggle(executeFilter=true) {
             each.classList.remove("active");
         };
     });
+    // Shows the tab of the button that is clicked:
     mobileTabs.forEach(each => {
-        if (each === plotContainer) {
+        if (each === container) {
             each.classList.remove('mobile-tab-inactive');
         } else {
             each.classList.add('mobile-tab-inactive');

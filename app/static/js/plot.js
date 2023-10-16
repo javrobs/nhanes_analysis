@@ -1,9 +1,10 @@
+// Variable to define whether a plot has been created:
 var plotCreated=false;
 
+// This function plots the graph with the data that is received from the server:
 function plot(data,yearFlag){
-    // legendDiv.classList.remove('d-none');
-    // legendDiv.classList.add('d-flex');
-    let yearRange=(yearFlag)?"2007-2008":"2017-2018";
+    // Initializes all the variables needed to plot the data:
+    let yearRange=(year2007.checked)?"2007-2008":"2017-2018";
     let y=[];
     let groceries=[];
     let nonFood=[];
@@ -15,9 +16,10 @@ function plot(data,yearFlag){
     let otherStoresPercentage=[];
     let eatingOutPercentage=[];
     let deliveredPercentage=[];
+    // Populates all the created variables with the data received from the server:
     for (let i=data.all_data.length-1;i>=0;i--){
         let line=data.all_data[i];
-        console.log(line);
+        // Populates the data of only the selected year:
         if (line.year==yearRange){
             y.push(`${line.description.replace("~","<br>")}<br><em>(${line["count"]})</em>`);
             groceries.push(line["groceries"]);
@@ -31,13 +33,14 @@ function plot(data,yearFlag){
             eatingOutPercentage.push(line["eating_out_percentage"]);
             deliveredPercentage.push(line["delivered_percentage"]);
         };
-    }
+    };
+    // Identifies how many missing values there are and adds the information to the DOM:
     data.nulls.forEach(line=>{
         if (line.year==yearRange){
             missingValueDiv.innerHTML=(line.missing!=0)?`Missing values: ${line['missing']}`:"";
         };
     });
-
+    // Defines the trace for the 'groceries' spending data:
     var trace1 = {
         x: groceries,
         y: y,
@@ -48,7 +51,7 @@ function plot(data,yearFlag){
         orientation: 'h',
         marker:{color:"#3D2F73"}
     };
-
+    // Defines the trace for the 'non-food' spending data:
     var trace2 = {
         x: nonFood,
         y: y,
@@ -59,7 +62,7 @@ function plot(data,yearFlag){
         orientation: 'h',
         marker:{color:"#2771A5"}
     };
-
+    // Defines the trace for the 'other stores' spending data:
     var trace3 = {
         x: otherStores,
         y: y,
@@ -70,7 +73,7 @@ function plot(data,yearFlag){
         orientation: 'h',
         marker:{color:"#30AEBA"}
     };
-
+    // Defines the trace for the 'eating out' spending data:
     var trace4 = {
         x: eatingOut,
         y: y,
@@ -81,7 +84,7 @@ function plot(data,yearFlag){
         orientation: 'h',
         marker:{color:"#D93662"}
     };
-
+    // Defines the trace for the 'delivered' spending data:
     var trace5 = {
         x: delivered,
         y: y,
@@ -92,14 +95,11 @@ function plot(data,yearFlag){
         orientation: 'h',
         marker:{color:"#E5BB3E"}
     };
-
+    // Creates an array with all the spending data traces:
     var data = [trace1,trace2,trace3,trace4,trace5];
-    console.log("plot width",plotArea.offsetWidth,plotArea.clientWidth);
-    
-    console.log("window height",plotArea.offsetWidth,plotArea.clientWidth);
+    // Defines the layout of the plot:
     var layout = {
         barmode: 'stack',
-        // autosize:true,
         height:(window.innerHeight-20-breadcrumbDiv.offsetHeight-legendDiv.offsetHeight),
         width: (plotArea.offsetWidth),
         showlegend:false,
@@ -113,36 +113,37 @@ function plot(data,yearFlag){
             fixedrange:true
         }
     };
-
+    // Plots with the correct data and layout and hides the default Plotly 'mode bar':
     Plotly.newPlot('plot', data, layout, {
         displayModeBar:false
     });
+    // Starts the window resize listener the first time a plot is created:
     if (plotCreated===false){
         startListener();
     };
-    console.log("plot width",plotArea.offsetWidth,plotArea.clientWidth);
 };
 
+// This function creates the listener of the window resizing:
 function startListener(){
+    // Indicates that a plot has been created:
     plotCreated=true;
+    // If the window is resized, it runs the 'resizedWindow' function after 0.1s:
     window.addEventListener("resize", ()=>{
-    console.log("listening for resize");
-    let doit;
-    clearTimeout(doit);
-    doit = setTimeout(resizedWindow, 100);
-    // let plotWidth=document.querySelector("#plotAndInstructionsContainer").offsetWidth-40;
-    // let plotHeight=window.innerHeight-40-breadcrumbDiv.offsetHeight-legendDiv.offsetHeight;
-    // Plotly.update('plot',{},{height:plotHeight,width:plotWidth});
+        let doit;
+        // Resets the timeout:
+        clearTimeout(doit);
+        // Sets the timeout to 0.1s and executes the 'resizedWindow' function if the timeout is completed:
+        doit = setTimeout(resizedWindow, 100);
     });
 };
 
+// This function changes the size of plot:
 function resizedWindow(){
-    let lastFilter = document.querySelector('.current-filter');
-    // if (lastFilter.value!=='default') {
-        Plotly.purge('plot');
-    // };
+    // Gets rid of the last plot:
+    Plotly.purge('plot');
+    // If the 'Graph' button is active, it runs the 'filter' function with the 'current-filter' data:
     if (desktopButton.classList.contains('about-button')) {
-    filter(lastFilter);
-    console.log("running filter resizedWindow yay");
+        let lastFilter = document.querySelector('.current-filter');
+        filter(lastFilter);
     };
 };

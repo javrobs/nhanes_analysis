@@ -11,14 +11,14 @@
     </head>
     <body>
         <div class="container-flex d-flex flex-column flex-md-row justify-content-between">
-            <div class="row grow d-flex flex-column flex-md-row">
+            <div class="row flex-grow-1 d-flex flex-column flex-md-row">
                 <div class="col-12 d-flex flex-column col-md-3 px-0" id="sideBar">
-                    <div class="row py-3" id="header">
+                    <header class="row py-3">
                         <div class="col-12">
                             <h1 id="title">US Food Spending</h1>
                             <p class="m-0" id="pageDescription">National Health and Nutrition Examination Survey<br>2007-2008 & 2017-2018</p>
                         </div>
-                    </div>
+                    </header>
                     <div class="d-md-none row">
                         <div class="col-4 px-0">
                             <button class="all-buttons mobile-button active" id="instructions-button">
@@ -70,7 +70,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-9 grow" id="plotAndInstructionsContainer">
+                <div class="col-12 col-md-9 flex-grow-1" id="plotAndInstructionsContainer">
                     <div class="mobile-tab top-padding-custom" id="instructions-container">
                         <h2>How to use this dashboard:</h2>
                         <p>Start by selecting a filter in the "Filter by" dropdown menu.</p>
