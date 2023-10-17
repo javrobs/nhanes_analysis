@@ -7,12 +7,10 @@ function plot(data,yearFlag){
     let yearRange=(year2007.checked)?"2007-2008":"2017-2018";
     let y=[];
     let groceries=[];
-    let nonFood=[];
     let otherStores=[];
     let eatingOut=[];
     let delivered=[];
     let groceriesPercentage=[];
-    let nonFoodPercentage=[];
     let otherStoresPercentage=[];
     let eatingOutPercentage=[];
     let deliveredPercentage=[];
@@ -23,12 +21,10 @@ function plot(data,yearFlag){
         if (line.year==yearRange){
             y.push(`${line.description.replace("~","<br>")}<br><em>(${line["count"]})</em>`);
             groceries.push(line["groceries"]);
-            nonFood.push(line["non_food"]);
             otherStores.push(line["other_stores"]);
             eatingOut.push(line["eating_out"]);
             delivered.push(line["delivered"]);
             groceriesPercentage.push(line["groceries_percentage"]);
-            nonFoodPercentage.push(line["non_food_percentage"]);
             otherStoresPercentage.push(line["other_stores_percentage"]);
             eatingOutPercentage.push(line["eating_out_percentage"]);
             deliveredPercentage.push(line["delivered_percentage"]);
@@ -51,19 +47,8 @@ function plot(data,yearFlag){
         orientation: 'h',
         marker:{color:"#3D2F73"}
     };
-    // Defines the trace for the 'non-food' spending data:
-    var trace2 = {
-        x: nonFood,
-        y: y,
-        customdata:nonFoodPercentage,
-        name: 'Non-food',
-        type: 'bar',
-        hovertemplate:"%{x:$.2f}<br>(%{customdata:.2f}%)",
-        orientation: 'h',
-        marker:{color:"#2771A5"}
-    };
     // Defines the trace for the 'other stores' spending data:
-    var trace3 = {
+    var trace2 = {
         x: otherStores,
         y: y,
         customdata:otherStoresPercentage,
@@ -72,9 +57,10 @@ function plot(data,yearFlag){
         hovertemplate:"%{x:$.2f}<br>(%{customdata:.2f}%)",
         orientation: 'h',
         marker:{color:"#30AEBA"}
+        // #2771A5
     };
     // Defines the trace for the 'eating out' spending data:
-    var trace4 = {
+    var trace3 = {
         x: eatingOut,
         y: y,
         customdata:eatingOutPercentage,
@@ -85,7 +71,7 @@ function plot(data,yearFlag){
         marker:{color:"#D93662"}
     };
     // Defines the trace for the 'delivered' spending data:
-    var trace5 = {
+    var trace4 = {
         x: delivered,
         y: y,
         customdata:deliveredPercentage,
@@ -96,7 +82,7 @@ function plot(data,yearFlag){
         marker:{color:"#E5BB3E"}
     };
     // Creates an array with all the spending data traces:
-    var data = [trace1,trace2,trace3,trace4,trace5];
+    var data = [trace1,trace2,trace3,trace4];
     // Defines the layout of the plot:
     var layout = {
         barmode: 'stack',

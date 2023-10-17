@@ -28,7 +28,6 @@ class main_table(db.Model):
     masked_variance_pseudo_psu=db.Column(db.Integer)
     masked_variance_pseudo_stratum=db.Column(db.Integer)
     money_spent_at_supermarket_grocery_store=db.Column(db.Float)
-    money_spent_on_nonfood_items=db.Column(db.Float)
     money_spent_on_food_at_other_stores=db.Column(db.Float)
     money_spent_on_eating_out=db.Column(db.Float)
     money_spent_on_carryout_delivered_foods=db.Column(db.Float)
