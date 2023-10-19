@@ -1,6 +1,7 @@
 // Constants for:
-// 1. The URL:
-const URL = '/queries';
+// 1. The URLs for API fetch calls:
+const reference_URL = 'https://javrobs.pythonanywhere.com/reference';
+const query_URL = 'https://javrobs.pythonanywhere.com/queries';
 // 2. The desktop button:
 const desktopButtonDiv = document.querySelector('#desktop-button-div');
 const desktopButton = document.querySelector('#desktop-button');
@@ -16,6 +17,7 @@ const instructionsContainer = document.querySelector('#instructions-container');
 const filterContainer = document.querySelector('#filter-container');
 const year2007 = document.querySelector('#first-year');
 const parentDiv = document.querySelector('#filter-by');
+const firstFilter = document.querySelector("#filter-1");
 // 6. The plot container:
 const plotContainer = document.querySelector('#plot-container');
 const mobileNoGraphMessage = document.querySelector('#mobile-no-graph-message');
@@ -33,6 +35,20 @@ var tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.
 mobileButtons.forEach(each => {
     each.addEventListener('click', showTab);
 });
+
+// Get column names from API and populate first filter
+fetch(reference_URL,{
+    method:'get',
+    mode: 'cors',
+    headers:
+    {
+        "Content-Type": "application/json"
+    },}).then(data => data.json()).then(data =>{
+        // For each of the received items, populate an option in the first filter select
+        data.forEach(one=>{
+            firstFilter.innerHTML+=`<option value=${one[0]}>${one[1]}</option>`;
+        });
+})
 
 // This function calls the server and gets the data to correctly populate the filter dropdown and the graph:
 function filter(element) {
@@ -103,7 +119,7 @@ function filter(element) {
     // This condition calls the server if the filter has a valid column value:
     if (column !== "default") {
         // Calls the server to get the data:
-        fetch(URL, {
+        fetch(query_URL, {
             method: 'POST',
             mode: 'cors',
             headers:
