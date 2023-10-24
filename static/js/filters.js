@@ -19,13 +19,17 @@ const year2007 = document.querySelector('#first-year');
 const parentDiv = document.querySelector('#filter-by');
 const firstFilter = document.querySelector("#filter-1");
 // 6. The plot container:
+const plotElementsDiv = document.querySelector("#plot-elements")
 const plotContainer = document.querySelector('#plot-container');
 const mobileNoGraphMessage = document.querySelector('#mobile-no-graph-message');
 const plotArea = document.querySelector('#plot');
 const errorMessage = document.querySelector('#error-message');
+const landscapeMobileMessage = document.querySelector("#landscape-mobile-message");
 const breadcrumbDiv = document.querySelector('#breadcrumb');
 const missingValueDiv=document.querySelector("#missingValuesNote");
 const legendDiv=document.querySelector('#legend');
+// 7. The header:
+const headerDiv = document.querySelector("header");
 
 // Variables for the tooltips:
 var tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
@@ -137,38 +141,53 @@ function filter(element) {
             mobileNoGraphMessage.classList.add("d-none");
             // This condition defines what to show once the server's response is received:
             // 1. In this case, the received data is plotted:
-            if (data.all_data.length > 0) {
-                desktopButtonDiv.classList.remove("d-none");
-                // This condition defines what will appear in the breadcrumb and whether there will be further filtering available:
-                // 1. In this case, further filtering is enabled and the breadcrumb is created:
-                if (caseOfFilter!==2) {
-                    // This function adds a category under the filter that runs the 'filter' function:
-                    createCategory(data, column, filterCount);
-                    // This function creates the breadcrumb:
-                    buildingBreadcrumb(filterCount);
-                // 2. In this case, only the breadcrumb is created:
+            // if (window.innerHeight>500){
+            if (window.innerWidth>767||window.innerWidth<window.innerHeight){
+                if (data.all_data.length > 0) {
+                    desktopButtonDiv.classList.remove("d-none");
+                    // This condition defines what will appear in the breadcrumb and whether there will be further filtering available:
+                    // 1. In this case, further filtering is enabled and the breadcrumb is created:
+                    if (caseOfFilter!==2) {
+                        // This function adds a category under the filter that runs the 'filter' function:
+                        createCategory(data, column, filterCount);
+                        // This function creates the breadcrumb:
+                        buildingBreadcrumb(filterCount);
+                    // 2. In this case, only the breadcrumb is created:
+                    } else {
+                        // This function creates the breadcrumb without the last category:
+                        buildingBreadcrumb(filterCount, false);
+                    };
+                    plotElementsDiv.classList.remove("d-none");
+                    // breadcrumbDiv.classList.remove("d-none");
+                    // missingValueDiv.classList.remove("d-none");
+                    // legendDiv.classList.remove("d-none");
+                    // legendDiv.classList.add("d-flex");
+                    // plotArea.classList.remove("d-none");
+                    errorMessage.classList.add("d-none");
+                    landscapeMobileMessage.classList.add("d-none");
+                    plot(data, year2007.checked);
+                // 2. In this case, the 'plotArea' is hidden and an error message is shown:
                 } else {
-                    // This function creates the breadcrumb without the last category:
-                    buildingBreadcrumb(filterCount, false);
-                };
-                
-                breadcrumbDiv.classList.remove("d-none");
-                missingValueDiv.classList.remove("d-none");
-                legendDiv.classList.remove("d-none");
-                legendDiv.classList.add("d-flex");
-                plotArea.classList.remove("d-none");
+                    // plotArea.classList.add("d-none");
+                    // breadcrumbDiv.classList.add("d-none");
+                    // missingValueDiv.classList.add("d-none");
+                    // legendDiv.classList.add("d-none");
+                    // legendDiv.classList.remove("d-flex");
+                    plotElementsDiv.classList.add("d-none");
+                    landscapeMobileMessage.classList.add("d-none");
+                    errorMessage.classList.remove("d-none");
+                    killCategory(filterCount);
+                };}
+            else {
+                // plotArea.classList.add("d-none");
+                // breadcrumbDiv.classList.add("d-none");
+                // missingValueDiv.classList.add("d-none");
+                // legendDiv.classList.add("d-none");
+                // legendDiv.classList.remove("d-flex");
+                plotElementsDiv.classList.add("d-none");
                 errorMessage.classList.add("d-none");
-                plot(data, year2007.checked);
-            // 2. In this case, the 'plotArea' is hidden and an error message is shown:
-            } else {
-                plotArea.classList.add("d-none");
-                breadcrumbDiv.classList.add("d-none");
-                missingValueDiv.classList.add("d-none");
-                legendDiv.classList.add("d-none");
-                legendDiv.classList.remove("d-flex");
-                errorMessage.classList.remove("d-none");
-                killCategory(filterCount);
-            };
+                landscapeMobileMessage.classList.remove("d-none");
+            }
         });
     };
 };

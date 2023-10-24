@@ -21,9 +21,9 @@
         overflow-y:scroll;
     }
     html,body,.container-flex,.container-flex{
-        min-height: 100vh;
+        min-height: 100dvh;
     }
-    header{
+    #title-div{
         border-bottom: 5px solid var(--darkpurple);
     }
     .mobile-tab-inactive{
@@ -33,10 +33,10 @@
 
 @media (min-width: 768px) {
     html,body{
-        height:100vh;
+        height:100dvh;
         overflow:hidden;
     }
-    header{
+    #title-div{
         border-bottom: 5px solid rgba(31, 90, 132, 1);
     }
     #mobile-no-graph-message{
@@ -46,7 +46,7 @@
         box-shadow:inset 6px 0 6px -6px grey;
     }
     #sideBar{
-        height:100vh;
+        height:100dvh;
     }
 }
 
@@ -70,8 +70,9 @@ i{
     cursor: pointer;
 }
 
-#pageDescription{
+.description{
     font-style: italic;
+    margin:0;
 }
 
 .row{

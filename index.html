@@ -15,33 +15,35 @@
                 <!-- Sidebar column -->
                 <div class="col-12 d-flex flex-column col-md-3 px-0" id="sideBar">
                     <!-- Page Title -->
-                    <header class="row py-3">
-                        <div class="col-12">
-                            <h1 id="title">US Food Spending</h1>
-                            <p class="m-0" id="pageDescription">National Health and Nutrition Examination Survey<br>2007-2008 & 2017-2018</p>
+                    <header class="row">
+                        <div class="col-12 py-1 py-md-3" id="title-div">
+                            <h1 class="m-0 mb-md-1" id="title">US Food Spending</h1>
+                            <p class="description d-md-none" id="page-description-mobile">NHANES Analysis</p>
+                            <p class="description d-none d-md-block" id="page-description">National Health and Nutrition Examination Survey<br>2007-2008 & 2017-2018</p>
+                        </div>
+                        <div class="d-md-none col-12 px-0" id="mobile-buttons-div">
+                            <div class="row">
+                                <div class="col-4 px-0">
+                                    <button class="all-buttons mobile-button active" id="instructions-button">
+                                        <i class="bi bi-info-circle-fill pe-1"></i>
+                                        About
+                                    </button>
+                                </div>
+                                <div class="col-4 px-0">
+                                    <button class="all-buttons mobile-button" id="filter-button">
+                                        <i class="bi bi-funnel-fill pe-1"></i>
+                                        Filters
+                                    </button>
+                                </div>
+                                <div class="col-4 px-0">
+                                    <button class="all-buttons mobile-button" id="plot-container-button">
+                                        <i class="bi bi-bar-chart-fill pe-1"></i>
+                                        Graph
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </header>
-                    <!-- Mobile version buttons and icons -->
-                    <div class="d-md-none row">
-                        <div class="col-4 px-0">
-                            <button class="all-buttons mobile-button active" id="instructions-button">
-                                <i class="bi bi-info-circle-fill pe-1"></i>
-                                About
-                            </button>
-                        </div>
-                        <div class="col-4 px-0">
-                            <button class="all-buttons mobile-button" id="filter-button">
-                                <i class="bi bi-funnel-fill pe-1"></i>
-                                Filters
-                            </button>
-                        </div>
-                        <div class="col-4 px-0">
-                            <button class="all-buttons mobile-button" id="plot-container-button">
-                                <i class="bi bi-bar-chart-fill pe-1"></i>
-                                Graph
-                            </button>
-                        </div>
-                    </div>
                     <!-- Filter container -->
                     <div class="d-flex flex-column row py-3 px-0 mobile-tab mobile-tab-inactive" id="filter-container">
                         <!-- Desktop button -->
@@ -88,35 +90,38 @@
                         <div class="top-padding-custom" id="mobile-no-graph-message">
                             <b>Please select a filter to see a graph.</b>
                         </div>
-                        <!-- Breadcrumb -->
-                        <div class="d-flex align-items-center py-3" id="breadcrumb"></div>
-                        <!-- Plot area -->
-                        <div id="plot"></div>
-                        <!-- Missing values note -->
-                        <div class="ghost">
-                            <div id="missingValuesNote"></div>
+                        <div class="d-none" id="plot-elements">
+                           <!-- Breadcrumb -->
+                            <div class="d-flex align-items-center py-3" id="breadcrumb"></div>
+                            <!-- Plot area -->
+                            <div id="plot"></div>
+                            <!-- Missing values note -->
+                            <div class="ghost">
+                                <div id="missingValuesNote"></div>
+                            </div>
+                            <!-- Legend -->
+                            <div class="px-5 py-2 align-items-center justify-content-between" id="legend">
+                                <div class="d-flex align-items-center">
+                                    <div class="color" id="color-1"></div>
+                                    <div class="legend-text">Groceries</div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="color" id="color-2"></div>
+                                    <div class="legend-text">Other stores</div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="color" id="color-3"></div>
+                                    <div class="legend-text">Eating out</div>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="color" id="color-4"></div>
+                                    <div class="legend-text">Delivery/Take-out</div>
+                                </div>
+                            </div> 
                         </div>
-                        <!-- Legend -->
-                        <div class="d-none px-5 py-2 align-items-center justify-content-between" id="legend">
-                            <div class="d-flex align-items-center">
-                                <div class="color" id="color-1"></div>
-                                <div class="legend-text">Groceries</div>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <div class="color" id="color-2"></div>
-                                <div class="legend-text">Other stores</div>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <div class="color" id="color-3"></div>
-                                <div class="legend-text">Eating out</div>
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <div class="color" id="color-4"></div>
-                                <div class="legend-text">Delivery/Take-out</div>
-                            </div>
-                        </div>
-                        <!-- Error message -->
+                        <!-- Error messages -->
                         <div id="error-message" class="d-none py-2"><b>No data</b></div>
+                        <div id="landscape-mobile-message" class="d-none py-2"><b>The visualization is only supported in portrait orientation in mobile devices, please rotate your device.</b></div>
                     </div>
                 </div>
             </div>  

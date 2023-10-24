@@ -1,11 +1,14 @@
 // Variable to define whether a plot has been created:
 var plotCreated=false;
+const mobileWidth=767;
+// let isLandscape
 
 // This function plots the graph with the data that is received from the server:
 function plot(data,yearFlag){
     // Initializes all the variables needed to plot the data:
     let yearRange=(year2007.checked)?"2007-2008":"2017-2018";
     let y=[];
+    let yMaxLength=[];
     let groceries=[];
     let otherStores=[];
     let eatingOut=[];
@@ -15,20 +18,21 @@ function plot(data,yearFlag){
     let eatingOutPercentage=[];
     let deliveredPercentage=[];
     // Populates all the created variables with the data received from the server:
-    for (let i=data.all_data.length-1;i>=0;i--){
+    let dataLength=data.all_data.length
+    for (let i=dataLength-1;i>=0;i--){
         let line=data.all_data[i];
-        // Populates the data of only the selected year:
-        if (line.year==yearRange){
-            y.push(`${line.description.replace("~","<br>")}<br><em>(${line["count"]})</em>`);
-            groceries.push(line["groceries"]);
-            otherStores.push(line["other_stores"]);
-            eatingOut.push(line["eating_out"]);
-            delivered.push(line["delivered"]);
-            groceriesPercentage.push(line["groceries_percentage"]);
-            otherStoresPercentage.push(line["other_stores_percentage"]);
-            eatingOutPercentage.push(line["eating_out_percentage"]);
-            deliveredPercentage.push(line["delivered_percentage"]);
-        };
+        // Populates the data:
+        let spacer=(dataLength>7&&window.innerWidth<=mobileWidth)?" ":"<br>";
+        let description=`${line.description.replace("~",spacer)}${spacer}<em>(${line["count"]})</em>`;
+        y.push(description);
+        groceries.push(line["groceries"]);
+        otherStores.push(line["other_stores"]);
+        eatingOut.push(line["eating_out"]);
+        delivered.push(line["delivered"]);
+        groceriesPercentage.push(line["groceries_percentage"]);
+        otherStoresPercentage.push(line["other_stores_percentage"]);
+        eatingOutPercentage.push(line["eating_out_percentage"]);
+        deliveredPercentage.push(line["delivered_percentage"]);
     };
     // Identifies how many missing values there are and adds the information to the DOM:
     data.nulls.forEach(line=>{
@@ -84,13 +88,16 @@ function plot(data,yearFlag){
     // Creates an array with all the spending data traces:
     var data = [trace1,trace2,trace3,trace4];
     // Defines the layout of the plot:
+    let height=window.innerHeight-20-breadcrumbDiv.offsetHeight-legendDiv.offsetHeight
+    height=(window.innerWidth>mobileWidth)?height:height-headerDiv.offsetHeight;
+    let margin=(height>700)?{b:60,l:160,t:100,r:30,autoexpand:false}:{b:40,l:160,t:60,r:30,autoexpand:false};
     var layout = {
         barmode: 'stack',
-        height:(window.innerHeight-20-breadcrumbDiv.offsetHeight-legendDiv.offsetHeight),
+        height:height,
         width: (plotArea.offsetWidth),
         showlegend:false,
         automargin:true,
-        margin:{b:60,l:160,t:100,r:30,autoexpand:false},
+        margin:margin,
         title:`Average Monthly Spending<br>${yearRange}`,
         xaxis: {
             fixedrange:true
@@ -124,12 +131,30 @@ function startListener(){
 };
 
 // This function changes the size of plot:
+
 function resizedWindow(){
-    // Gets rid of the last plot:
+    // console.log(window.innerWidth,window.innerHeight);
+    // let statusNow=isLandscape;
+    // isLandscape=window.innerWidth>window.innerHeight;
+    // if (statusNow!==isLandscape){
+    //     console.log("Changed orientation");
+    //     refreshPlot();
+    // }
+    // if (window.innerWidth>mobileWidth){
+    //     refreshPlot();
+    // } else {
+
+    // }
+    // // Gets rid of the last plot:
+    
+    refreshPlot();
+};
+
+function refreshPlot(){
     Plotly.purge('plot');
     // If the 'Graph' button is active, it runs the 'filter' function with the 'current-filter' data:
     if (desktopButton.classList.contains('about-button')) {
         let lastFilter = document.querySelector('.current-filter');
         filter(lastFilter);
     };
-};
+}
