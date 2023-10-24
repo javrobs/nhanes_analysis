@@ -19,8 +19,9 @@
 @media (max-width: 767px) {
     html{
         overflow-y:scroll;
+        height:100svh;
     }
-    html,body,.container-flex,.container-flex{
+    body,.container-flex,.container-flex{
         min-height: 100dvh;
     }
     #title-div{
