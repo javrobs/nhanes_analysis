@@ -1,7 +1,7 @@
 // Constants for:
 // 1. The URLs for API fetch calls:
-const reference_URL = 'https://javrobs.pythonanywhere.com/reference';
-const query_URL = 'https://javrobs.pythonanywhere.com/queries';
+const reference_URL = 'https://nhanesanalysisdj.pythonanywhere.com/reference';
+const query_URL = 'https://nhanesanalysisdj.pythonanywhere.com/queries';
 // 2. The desktop button:
 const desktopButtonDiv = document.querySelector('#desktop-button-div');
 const desktopButton = document.querySelector('#desktop-button');
