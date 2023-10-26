@@ -81,8 +81,21 @@
                 <div class="col-12 col-md-9 flex-grow-1" id="plotAndInstructionsContainer">
                     <!-- Instructions -->
                     <div class="mobile-tab top-padding-custom" id="instructions-container">
-                        <h2>How to use this dashboard:</h2>
-                        <p>Start by selecting a filter in the "Filter by" dropdown menu.</p>
+                        <h2 class="mb-1">Welcome to the NHANES Food Spending and Consumption Dashboard</h2>
+                        <p class="mb-1">Explore and visualize data from the National Health and Nutrition Examination Survey (NHANES) related to food spending and consumption. Create bar charts by filtering the population based on demographic criteria and compare the latest data to the data collected 10 years prior.
+                            Tailor your population of interest and compare data over a ten-year period.</p>
+                        
+                        <h2 class="mb-1">How to use this dashboard:</h2>
+                            <ol class="d-none d-md-block mb-1">
+                                <li>Select a filter from the dropdown menu on the sidebar. A bar chart will be displayed.</li>
+                                <li>Hover over the bars to see the amount of US dollars spent a month and the percentage of total food spending. The legend under the graph shows spending types by color.</li>
+                                <li>Further refine your selection by choosing a specific category within the filter and adding another demographic filter. Repeat this process as much as you want.</li>
+                            </ol>
+                            <ol class="d-md-none mb-1">
+                                <li>Tap the Filters tab and select a filter from the dropdown menu. You will be redirected to the Graph tab where the bar chart will be displayed.</li>
+                                <li>Tap on the bars to view the amount of US dollars spent a month and the percentage of total food spending. The legend under the graph shows spending types by color.</li>
+                                <li>Further refine your selection by returning to the Filters tab, choosing a specific category within the filter, and then adding another demographic filter.</li>
+                            </ol>
                     </div>
                     <!-- Plot container -->
                     <div class="mobile-tab mobile-tab-inactive d-none" id="plot-container">
