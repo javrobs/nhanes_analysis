@@ -28,6 +28,7 @@ const landscapeMobileMessage = document.querySelector("#landscape-mobile-message
 const breadcrumbDiv = document.querySelector('#breadcrumb');
 const missingValueDiv=document.querySelector("#missingValuesNote");
 const legendDiv=document.querySelector('#legend');
+const padderDiv=document.querySelector("#padder");
 // 7. The header:
 const headerDiv = document.querySelector("header");
 

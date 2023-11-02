@@ -88,7 +88,7 @@ function plot(data,yearFlag){
     // Creates an array with all the spending data traces:
     var data = [trace1,trace2,trace3,trace4];
     // Defines the layout of the plot:
-    let height=window.innerHeight-20-breadcrumbDiv.offsetHeight-legendDiv.offsetHeight
+    let height=window.innerHeight-breadcrumbDiv.offsetHeight-legendDiv.offsetHeight-padderDiv.offsetHeight;
     height=(window.innerWidth>mobileWidth)?height:height-headerDiv.offsetHeight;
     let margin=(height>700)?{b:60,l:160,t:100,r:30,autoexpand:false}:{b:40,l:160,t:60,r:30,autoexpand:false};
     var layout = {
