@@ -260,6 +260,13 @@ select{
     font-size:smaller;
 }
 
+.grayedout-text-italics{
+    color:gray;
+    font-style:italic;
+    font-family:"Open Sans", verdana, arial, sans-serif;
+    font-size:smaller;
+}
+
 .contact-card{
     /* background-color: var(--mintblue);
     border-radius: 15px; */

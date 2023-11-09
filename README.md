@@ -1,6 +1,8 @@
-# NHANES analysis
+# NHANES Food Spending and Consumption Dashboard
 
-This app is currently **in development**. It will compare different results of the US National Health and Nutrition Examination Survey (NHANES) on a ten-year gap —from 2007-2008 to 2017-2018.
+This is an app built to explore and visualize data from the National Health and Nutrition Examination Survey (NHANES) related to food spending and consumption. The user can create bar charts by filtering the population based on demographic criteria and compare the latest data to the data collected 10 years prior.
+
+#### -- Project Status: [Completed]
 
 ## Contributing
 
