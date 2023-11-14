@@ -97,14 +97,13 @@
                                 <li>Further refine your selection by returning to the Filters tab, choosing a specific category within the filter, and then adding another demographic filter.</li>
                             </ol>
                         <h4 class="">About the app:</h4>
-                        <p class="">
+                        <p class="mb-1">
                             The data displayed in the visualizations were collected for the NHANES and taken from the Centers for Disease Control and Prevention (CDC) website.
                             The graphs show the data collected for the 2007-2008 and the 2017-2018 surveys.<br>
                             The word filter is a demographic variable in this app, and a category is a group or measurement of a filter.<br>
-                            Each category is represented with a bar that is divided into four different segments or types of food spending. All the segments of a bar add up to 100%, hence, each segment represents only a portion of the monthly total amount of food spending in US dollars.
+                            The legend of the graph represents four different types of food spending:
                         </p>
-                        <h4 class="">About the legend:</h4>
-                        <table class="mb-3">
+                        <table class="mb-2">
                             <tr>
                                 <td class="text-end align-top">
                                     <div class="d-inline-flex align-items-center mx-2">
@@ -156,6 +155,10 @@
                                 </td>
                             </tr>
                         </table>
+                        <p>
+                            Each category is represented with a bar that is divided into the four types of food spending. All the segments of a bar add up to 100%.
+                            Each segment represents the monthly average US dollars of a type of food spending.
+                        </p>
                         <h4>Source:</h4>
                         <p>Centers for Disease Control and Prevention (CDC):</p>
                         <ul>
@@ -200,7 +203,7 @@
                                 <div class="grayedout-text" id="missingValuesNote"></div>
                             </div>
                             <!-- Legend -->
-                            <div class="px-5 py-2 align-items-center justify-content-between" id="legend">
+                            <div class="d-flex px-5 py-2 align-items-center justify-content-between" id="legend">
                                 <div class="d-flex align-items-center">
                                     <div class="color" id="color-1"></div>
                                     <div class="legend-text">Groceries</div>

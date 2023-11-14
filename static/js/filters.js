@@ -229,7 +229,7 @@ function createCategory(data, column, counter) {
     let newSelect = document.createElement("select");
     let defaultOption = document.createElement("option");
     // Defines the default option text and its parameters:
-    defaultOption.innerHTML = "Select an option..";
+    defaultOption.innerHTML = "Select a category...";
     defaultOption.value = "default";
     defaultOption.disabled = true;
     defaultOption.selected = true;
